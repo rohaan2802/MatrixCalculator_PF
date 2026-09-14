@@ -366,43 +366,51 @@ bool adjointViaInverse(const double A[N][N], int n, double Adj[N][N]) {
 
 /* ---------- UI ---------- */
 void printBanner() {
-    cout << "\n";
-    cout << "  ============================================================\n";
-    cout << "  |                                                          |\n";
-    cout << "  |          MATRIX CALCULATOR  PF  (Professional)           |\n";
-    cout << "  |              Square matrices up to " << N << " x " << N << "                 |\n";
-    cout << "  |              Author: 22I-2327  ·  Double GE              |\n";
-    cout << "  |                                                          |\n";
-    cout << "  ============================================================\n";
+    cout << "\n\n";
+    cout << "  =====================================================================\n";
+    cout << "  ||                                                                 ||\n";
+    cout << "  ||              MATRIX CALCULATOR  PF  (Professional)              ||\n";
+    cout << "  ||                                                                 ||\n";
+    cout << "  ||         Square matrices up to " << N << " x " << N
+         << "  |  Double precision GE          ||\n";
+    cout << "  ||         Author: Mohammad Rohaan  ·  Roll 22I-2327                ||\n";
+    cout << "  ||                                                                 ||\n";
+    cout << "  =====================================================================\n\n";
 }
 
 void printMenu() {
-    cout << "\n  ------------------------------------------------------------\n";
-    cout << "  Last operation : " << lastOpName << "\n";
-    cout << "  ------------------------------------------------------------\n";
-    cout << "   COURSE MENU\n";
-    cout << "    1. Display matrix A\n";
-    cout << "    2. Symmetric check  (+ show transpose)\n";
-    cout << "    3. Identity check\n";
-    cout << "    4. Determinant\n";
-    cout << "    5. Adjoint / adjugate\n";
-    cout << "    6. Inverse\n";
-    cout << "    7. Solve Ax = b\n";
-    cout << "    8. Exit\n";
-    cout << "   EXTRAS\n";
-    cout << "    9. Transpose\n";
-    cout << "   10. Matrix addition   (A + B)\n";
-    cout << "   11. Matrix subtraction (A - B)\n";
-    cout << "   12. Matrix multiplication (A * B)\n";
-    cout << "   13. Scalar multiply (k * A)\n";
-    cout << "   14. Trace\n";
-    cout << "   15. Rank (Gaussian elimination)\n";
-    cout << "   16. Load sample matrices\n";
-    cout << "   17. Show banner / about\n";
-    cout << "   18. Save last result to result.txt\n";
-    cout << "   19. Show last operation history\n";
-    cout << "  ------------------------------------------------------------\n";
-    cout << "  Choose option [1-19]: ";
+    cout << "\n";
+    cout << "  ---------------------------------------------------------------------\n";
+    cout << "   Status\n";
+    cout << "     Last operation : " << lastOpName << "\n";
+    cout << "  ---------------------------------------------------------------------\n\n";
+
+    cout << "   ========================  COURSE MENU (1-8)  ========================\n\n";
+    cout << "     1.  Display matrix A\n";
+    cout << "     2.  Symmetric check          (also prints transpose)\n";
+    cout << "     3.  Identity check\n";
+    cout << "     4.  Determinant              (Gaussian elimination)\n";
+    cout << "     5.  Adjoint / adjugate\n";
+    cout << "     6.  Inverse                  (double precision)\n";
+    cout << "     7.  Solve linear system      Ax = b\n";
+    cout << "     8.  Exit program\n\n";
+
+    cout << "   ========================  EXTRA TOOLS (9-19)  ========================\n\n";
+    cout << "     9.  Transpose of A\n";
+    cout << "    10.  Matrix addition          A + B\n";
+    cout << "    11.  Matrix subtraction       A - B\n";
+    cout << "    12.  Matrix multiplication    A * B\n";
+    cout << "    13.  Scalar multiplication    k * A\n";
+    cout << "    14.  Trace of A\n";
+    cout << "    15.  Rank of A                (Gaussian elimination)\n";
+    cout << "    16.  Load sample matrices     (identity / singular / symmetric...)\n";
+    cout << "    17.  Show banner / about\n";
+    cout << "    18.  Save last result         -> result.txt\n";
+    cout << "    19.  Show last operation history\n\n";
+
+    cout << "  ---------------------------------------------------------------------\n";
+    cout << "   Enter option number (1 to 19)\n";
+    cout << "  > ";
 }
 
 /* ---------- operations (A is NEVER overwritten) ---------- */
