@@ -9,7 +9,7 @@
 #include <iomanip>
 #include <cmath>
 #include <fstream>
-#include <cstring>
+#include <string>
 #ifdef _WIN32
 #include <windows.h>
 #ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
@@ -101,7 +101,7 @@ void printMatrix(const double M[N][N], int rows, int cols, int prec = 6) {
     setColor(C_DIM);
     cout << "        ";
     for (int j = 0; j < cols; j++) {
-        cout << setw(11) << "c" << (j + 1);
+        cout << setw(12) << ("c" + to_string(j + 1));
     }
     cout << "\n";
     setColor(C_RESET);

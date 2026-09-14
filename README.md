@@ -26,6 +26,54 @@ python docs/generate_screenshots.py
 
 ---
 
+## Ready to run
+
+1. Open [`PF_Project_2.sln`](PF_Project_2.sln) in Visual Studio 2022.
+2. Set configuration to **Release** and platform to **x64**.
+3. Build the solution (`Ctrl+Shift+B` or **Build → Build Solution**).
+4. Run the executable from the project folder: `x64\Release\PF_Project_2.exe`  
+   (Command Prompt / Windows Terminal — so console colors show correctly.)
+
+MSBuild one-liner (same config):
+
+```bat
+"C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" PF_Project_2.sln /p:Configuration=Release /p:Platform=x64
+```
+
+---
+
+## Requirements checklist
+
+| # | Requirement | Status |
+|---|-------------|--------|
+| 1 | Display matrix A (`setw` / `setprecision`) | Done |
+| 2 | Symmetric check (full pairwise for all `n`) | Done |
+| 3 | Identity check (initialized flag; diag 1 / off-diag 0) | Done |
+| 4 | Determinant (GE + partial pivoting; `lastDet`) | Done |
+| 5 | Adjoint / adjugate (cofactors `n≤3`; `Inv·det` when invertible) | Done |
+| 6 | Inverse (GE on `[A \| I]`; refuse singular) | Done |
+| 7 | Solve `Ax = b` (correct **n×1** `b`; GE solve) | Done |
+| 8 | Exit (clean loop; no `goto`) | Done |
+| 9 | Transpose | Done |
+| 10 | Addition `A + B` | Done |
+| 11 | Subtraction `A − B` | Done |
+| 12 | Multiplication `A · B` | Done |
+| 13 | Scalar `k · A` | Done |
+| 14 | Trace | Done |
+| 15 | Rank (row-reduced GE) | Done |
+| 16 | Sample presets | Done |
+| 17 | Banner / about | Done |
+| 18 | Save `result.txt` | Done |
+| 19 | History (last op + last result) | Done |
+| — | GE for all square sizes **n ≤ 10** | Done |
+| — | **`double`** throughout (det / inv / solve) | Done |
+| — | Working matrix **A preserved** (ops use temps) | Done |
+| — | **30** README screenshots in `docs/screenshots/` | Done |
+
+**Session control:** after each op — **Y** same matrix · **N** new size/entries · **0** exit. Nested `while` loops (no broken `goto`).
+
+---
+
 ## Features
 
 | # | Feature | Notes |
@@ -170,7 +218,7 @@ Single translation unit [`Source.cpp`](Source.cpp) (PF style). Helpers live in t
 
 **Adjoint:** for small `n`, cofactors match the course worksheet. For larger invertible matrices, `Inv * det` yields the adjugate without building every minor explicitly.
 
-Includes: `<iostream> <iomanip> <cmath> <fstream> <cstring>`. No C++20 requirement.
+Includes: `<iostream> <iomanip> <cmath> <fstream> <string>`. No C++20 requirement.
 
 ---
 
