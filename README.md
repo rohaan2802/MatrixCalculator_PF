@@ -1,213 +1,215 @@
 # MatrixCalculator_PF
 
-Programming Fundamentals **square-matrix calculator** (`PF_Project_2`). Storage is a fixed `int Matrix[n][n]` with `const int n = 10` (capacity 10×10). **Determinant, adjoint, inverse, and Ax = b** are implemented only for **2×2 and 3×3**. Session control uses **`goto`** labels (`New`, `A`, `cont`, `terminate`). Arithmetic is integer-heavy: inverse entries are printed with **integer division**, so fractions truncate toward zero.
+Professional **square-matrix console calculator** for Programming Fundamentals — rebuilt from the original course project with every menu feature preserved, numerical bugs fixed, and production-minded extras added.
 
-**Course / author:** Programming Fundamentals · Mohammad Rohaan · roll **22I-2327**  
-**Source on GitHub:** `Source.cpp` · solution `PF_Project_2.sln`  
-[https://github.com/rohaan2802](https://github.com/rohaan2802)
-
----
-
-## Table of contents
-
-1. [What it is](#what-it-is)
-2. [Architecture](#architecture)
-3. [File-by-file](#file-by-file)
-4. [Menu 1–8](#menu-18)
-5. [Algorithms](#algorithms)
-6. [I/O and formatting](#io-and-formatting)
-7. [Goto flow](#goto-flow)
-8. [Build and run](#build-and-run)
-9. [Known limitations](#known-limitations)
-10. [Author](#author)
+**Author:** Mohammad Rohaan · **22I-2327**  
+**Capacity:** `const int N = 10` (square matrices up to 10×10)  
+**Source:** [`Source.cpp`](Source.cpp) · solution [`PF_Project_2.sln`](PF_Project_2.sln)  
+**Repository:** [github.com/rohaan2802/MatrixCalculator_PF](https://github.com/rohaan2802/MatrixCalculator_PF)
 
 ---
 
-## What it is
+## Visual walkthrough
 
-`main` prompts `ENTER THE SIZE OF THE SQUARE MATRIX:`, reads `matrix_size`, then `Input_Matrix` fills `mat_size²` integers (1-based labels `Matrix[i+1, j+1]`). A numbered menu (prompt text says “1-7” but **case 8** exists) dispatches to helpers. After each operation the program asks **Y** (same matrix), **N** (new size and entries), or **0** (jump to `terminate`). Globals: `double deter`, `char ch`, `const int n = 10`. A commented `#define n 10` notes that a macro and `const` must not both define `n`.
+Open the [Screenshot gallery](#screenshot-gallery) below for an end-to-end tour: banner and menu, validated size entry, matrix input, course operations 1–7, singular-matrix handling, continue prompt, sample presets, and a full session demo.
 
----
-
-## Architecture
-
-Forward declarations, then `main`, then eight function definitions. Matrices are **row-major `int[10][10]`**. Helpers take `(int Matrix[n][n], int mat_size)`. Several operations **overwrite `Matrix` in place** (adjoint / inverse / solve), so option 1 after option 5 no longer shows the original entries.
-
-| Function | Role |
-|----------|------|
-| `Input_Matrix` | Nested `cin` into `Matrix[i][j]` |
-| `Output_Matrix` | `left << setw(5)` grid |
-| `Symetric_Matrix` | Print original + transpose; compare off-diagonals for n = 2 or 3 |
-| `Identity_Matrix` | Diagonal 1 / off-diagonal 0 scan, then print + verdict |
-| `Determinant_Matrix` | 2×2 `ad−bc`; 3×3 cofactor expansion into **local** `double deter` |
-| `Adjoint_Matrix` | 2×2 / 3×3 adjugate; mutates `Matrix`; 3×3 print has a last-row typo |
-| `Inverse_Matrix` | Recomputes det + adj; prints `Matrix[i][j] / deter` if `deter != 0` |
-| `Matrix_solution` | Prompts a constant vector; `x = A⁻¹ b` style multiply for n = 2 or 3 |
-
-Includes: `<iostream>`, `<iomanip>`. `using namespace std;`
-
----
-
-## File-by-file
-
-| Path | Role |
-|------|------|
-| `Source.cpp` | All logic (GitHub name; local extract `MatrixCalc.cpp`) |
-| `PF_Project_2.sln` | Visual Studio solution |
-| `PF_Project_2.vcxproj` / `.filters` | Project files |
-| `.gitattributes` / `.gitignore` | Git metadata |
-
-No header split, no Gaussian-elimination module, no tests.
-
----
-
-## Menu 1–8
-
-Printed after input (wording from source):
-
-| Option | Label in menu | Function |
-|--------|----------------|----------|
-| 1 | Display a matrix | `Output_Matrix` |
-| 2 | Symmetric or not | `Symetric_Matrix` (name spelled **Symetric**) |
-| 3 | Identity or not | `Identity_Matrix` |
-| 4 | Determinant | `Determinant_Matrix` |
-| 5 | Adjoint | `Adjoint_Matrix` |
-| 6 | Inverse | `Inverse_Matrix` |
-| 7 | Solution of linear equations | `Matrix_solution` |
-| 8 | Terminate | `goto terminate` |
-
-Invalid `option` values fall out of the `switch` with no message, then still hit the Y/N/0 prompt.
-
----
-
-## Algorithms
-
-### Symmetric (`Symetric_Matrix`)
-
-Always prints the original and the transpose `Matrix[j][i]`. Equality is **not** a full nested compare:
-
-- **n = 2:** `Matrix[0][1] == Matrix[1][0]` only (diagonal ignored, correct for 2×2 symmetry).
-- **n = 3:** `(0,1)=(1,0)` and `(0,2)=(2,0)` and `(1,2)=(2,1)`.
-- **Other sizes:** transpose is printed; **no** “IS / IS NOT SYMMETRIC” line.
-
-### Identity (`Identity_Matrix`)
-
-Nested loops: if `i == j && Matrix[i][j] != 1` or `i != j && Matrix[i][j] != 0`, set `bool a = 1`. Then `if (a == 0)` claims identity. **`a` is never initialized to 0**, so a true identity matrix leaves `a` uninitialized (undefined behavior). The success message mentions only the principal diagonal.
-
-### Determinant (`Determinant_Matrix`)
-
-**2×2:** `deter = (M00 * M11) − (M01 * M10)`.
-
-**3×3:** minors
-
-- `x = M11*M22 − M21*M12`
-- `y = M10*M22 − M20*M12`
-- `z = M10*M21 − M20*M11`
-- `deter = M00*x − M01*y + M02*z`
-
-This is standard first-row expansion (`y` already omits the usual extra minus on the middle cofactor because the formula subtracts `M01*y`). For `mat_size` other than 2 or 3, **local** `double deter` is uninitialized when printed. This local **shadows** the global `double deter`; option 4 does **not** fill the global used elsewhere.
-
-### Adjoint (`Adjoint_Matrix`)
-
-**2×2:** swap diagonal, negate off-diagonal, **write back into `Matrix`**, print two rows.
-
-**3×3:** cofactor matrix `a[3][3]`, then **transpose into `Matrix`**. Display always prints three rows of three; the last printed line uses `Matrix[1][2]` instead of `Matrix[2][2]` (`Matrix[2][0]`, `Matrix[2][1]`, `Matrix[1][2]`). For n ≠ 2 and n ≠ 3 the 3×3 print still runs and reads unwritten cells.
-
-### Inverse (`Inverse_Matrix`)
-
-Recomputes **`int deter`** (truncates the 3×3 formula). Builds the same adjoint **in place**. If `deter != 0`, prints `Matrix[i][j] / deter` as **ints**. Example: det = 2 and adj entry 1 prints `0`. If det = 0: `Determinat is zero so inverse cannot be find`.
-
-### Linear system (`Matrix_solution`)
-
-Intended model: solve `A x = b` via `x = A⁻¹ b` after replacing `A` with adj(A).
-
-**2×2:** `int arr[2][1]`. Input loops `i < mat_size - 1` (one outer pass) and `j < mat_size` (two `cin`s). That writes `arr[0][0]` and **`arr[0][1]`**, which is **outside** `arr[2][1]`. Display uses `j < mat_size - 1`. Solution line mixes `arr[0][0]`, `arr[0][1]`, `arr[1][0]`.
-
-**3×3:** `int arr[3][1]`, outer `i < mat_size - 2` (one pass), inner `j < mat_size` (three writes into row 0, including out-of-range columns). Uses **global** `deter` for the 3×3 formula. Combine with integer `/ deter` on the adjoint.
-
-There is **no** Gaussian elimination and **no** n = 4…10 solver.
-
----
-
-## I/O and formatting
-
-- Size: `cin >> matrix_size` (not clamped to `n`; `mat_size > 10` overruns the array).
-- Entries: integers only (`int Matrix`).
-- Display: `cout << left << setw(5)`.
-- Continue prompt: `Press Y … N … 0` into `char ch`. Only `'Y'/'y'`, `'N'/'n'`, `'0'` are handled; other characters fall through to `system("pause"); return 0;`.
-
----
-
-## Goto flow
-
-```text
-New:     allocate Matrix, read size
-A:       Input_Matrix          (label A is never jumped to)
-cont:    print menu, switch
-         case 8 → goto terminate
-terminate:  (label is **inside** the switch after case 8)
-         print “The Program is terminated.... Thank You”
-         then execution **leaves the switch** and still prints Y/N/0
-Y/y → cont     N/n → New     0 → terminate (Thank You again, then Y/N/0 again)
-```
-
-So option 8 and press `0` do **not** `return`; they reprint the thank-you line and the continue prompt. `system("pause")` runs only when `ch` is none of Y/N/0.
-
----
-
-## Build and run
+Regenerate images anytime:
 
 ```bash
-g++ -o MatrixCalculator Source.cpp
-./MatrixCalculator
+pip install Pillow
+python docs/generate_screenshots.py
 ```
-
-Open `PF_Project_2.sln` in Visual Studio. Practical sizes for the full menu: **2 or 3**. For n = 2, inverse of `[[1,0],[0,1]]` prints `1 0 / 0 1`. For n = 2, inverse of `[[1,2],[3,4]]` (det = −2) uses integer division on the adjoint.
-
-Worked **2×2 inverse** as the code does it (option 6), matrix `A = [[1,2],[3,4]]`:
-
-| Step | Value |
-|------|--------|
-| `deter` | `1*4 − 2*3 = −2` (`int`) |
-| After in-place adj | `[[4, −2],[−3, 1]]` |
-| Printed `adj / deter` | `4/(-2)=−2`, `(-2)/(-2)=1`, `(-3)/(-2)=1` (truncation), `1/(-2)=0` |
-
-So the printed inverse is **not** the real `[[−2, 1],[1.5, −0.5]]`. Option 1 after this shows the **adjoint**, not `A`.
-
-Worked **2×2 det** (option 4) uses a **local** `double deter`, so a following option 7 (3×3 path) still reads the **global** `deter` (often 0 if never written). Option 5 for 3×3 always prints three rows even when `mat_size != 3`.
-
-Typical session:
-
-1. Size `3`, nine integers.  
-2. Option 1 — formatted grid.  
-3. Option 4 — first-row expansion.  
-4. Option 6 — inverse with `int` division; `Matrix` is now the adjugate.  
-5. `Y` — menu again on the **mutated** array; `N` — label `New` (new size); `0` — thank-you then the same prompt again.
-
-`system("pause")` is Windows-oriented (`pause` command). On MinGW it may still work; on other hosts it is a no-op or an error after a non-Y/N/0 character.
 
 ---
 
-## Known limitations
+## Features
 
-| Item | Detail |
-|------|--------|
-| Sizes 4–10 | Input/display/identity scan work; det/adj/inverse/solve branches do not implement n > 3 |
-| Integer truncation | Inverse and solve use `int / int` |
-| In-place adjoint | Options 5–7 destroy the original `Matrix` |
-| Uninitialized `bool a` | Identity true-path is undefined |
-| Uninitialized local `deter` | Option 4 when n ∉ {2,3} |
-| Global vs local `deter` | Option 4 does not update the global; 3×3 solve uses the global |
-| Constant-vector loops | `mat_size-1` / `mat_size-2` and `arr[][1]` layout |
-| 3×3 adjoint last cell | Prints `Matrix[1][2]` twice in spirit |
-| `goto` | No structured loop; `terminate` inside `switch` |
-| Menu text | Says 1–7 while 8 is implemented |
-| No pivoting / GE | Cannot invert general n×n |
+| # | Feature | Notes |
+|---|---------|--------|
+| 1 | Display matrix A | `setw` / `setprecision` double grid |
+| 2 | Symmetric check | Full `A[i][j] == A[j][i]` for all `n`; prints transpose |
+| 3 | Identity check | Flag **initialized**; diagonal 1 / off-diagonal 0 |
+| 4 | Determinant | Gaussian elimination + partial pivoting; updates `lastDet` |
+| 5 | Adjoint / adjugate | Cofactors for `n ≤ 3`; `A⁻¹·det` for invertible `n ≤ 10` |
+| 6 | Inverse | GE on augmented `[A \| I]`; refuses singular matrices |
+| 7 | Solve `Ax = b` | Correct **n×1** `b` input; GE solve |
+| 8 | Exit | Clean loop exit (no `goto`) |
+| 9 | Transpose | Print / store last result |
+| 10 | Addition `A + B` | Prompts square `B` |
+| 11 | Subtraction `A − B` | Prompts square `B` |
+| 12 | Multiplication `A · B` | Same-size square multiply |
+| 13 | Scalar `k · A` | Double scalar |
+| 14 | Trace | Sum of diagonal |
+| 15 | Rank | Row-reduced GE |
+| 16 | Sample presets | I, Hilbert-ish, singular, symmetric, classic 2×2 / 3×3 |
+| 17 | Banner / about | Pretty professional banner |
+| 18 | Save `result.txt` | Optional dump of last result |
+| 19 | History | Last operation name (+ last numeric result) |
 
-**If extending:** `double` throughout; recursive det or GE for n ≤ 10; copy-on-write so display still shows A; initialize `a = false`; move `terminate` to a real `return`.
+**Session control:** after each op — **Y** same matrix · **N** new size/entries · **0** exit. Implemented with nested `while` loops (no broken `goto`).
+
+**Invariant:** working matrix `A` is never overwritten; all mutating algorithms run on temporary copies.
+
+---
+
+## Screenshot gallery
+
+### 01 — Main banner + menu
+![01 main banner menu](docs/screenshots/01-main-banner-menu.png)
+
+### 02 — Size input (1..10 validation)
+![02 size input](docs/screenshots/02-size-input.png)
+
+### 03 — Matrix entry
+![03 matrix entry](docs/screenshots/03-matrix-entry.png)
+
+### 04 — Display matrix
+![04 display matrix](docs/screenshots/04-display-matrix.png)
+
+### 05 — Symmetric check (yes)
+![05 symmetric yes](docs/screenshots/05-symmetric-yes.png)
+
+### 06 — Identity check
+![06 identity check](docs/screenshots/06-identity-check.png)
+
+### 07 — Determinant 2×2
+![07 determinant 2x2](docs/screenshots/07-determinant-2x2.png)
+
+### 08 — Determinant 3×3
+![08 determinant 3x3](docs/screenshots/08-determinant-3x3.png)
+
+### 09 — Adjoint
+![09 adjoint](docs/screenshots/09-adjoint.png)
+
+### 10 — Inverse (double)
+![10 inverse double](docs/screenshots/10-inverse-double.png)
+
+### 11 — Solve Ax = b
+![11 solve axb](docs/screenshots/11-solve-axb.png)
+
+### 12 — Transpose
+![12 transpose](docs/screenshots/12-transpose.png)
+
+### 13 — Multiply
+![13 multiply](docs/screenshots/13-multiply.png)
+
+### 14 — Rank & trace
+![14 rank trace](docs/screenshots/14-rank-trace.png)
+
+### 15 — Singular: no inverse
+![15 singular no inverse](docs/screenshots/15-singular-no-inverse.png)
+
+### 16 — Continue prompt
+![16 continue prompt](docs/screenshots/16-continue-prompt.png)
+
+### 17 — Sample presets
+![17 sample presets](docs/screenshots/17-sample-presets.png)
+
+### 18 — Full session demo
+![18 full session demo](docs/screenshots/18-full-session-demo.png)
+
+---
+
+## Architecture / algorithms
+
+Single translation unit [`Source.cpp`](Source.cpp) (PF style). Helpers live in the same file as free functions / shared session state.
+
+| Piece | Role |
+|-------|------|
+| `determinantGE` | Partial-pivoting GE on a **copy**; writes `lastDet` |
+| `inverseGE` | Row-reduce `[A \| I]` → `A⁻¹` |
+| `solveGE` | Row-reduce `[A \| b]` → `x` |
+| `rankGE` | Count nonzero pivots after reduction |
+| `adjointCofactors` | Course-style cofactor/adjugate for `n ≤ 3` |
+| `adjointViaInverse` | `adj(A) = A⁻¹ · det(A)` when invertible |
+| Session state | `lastDet`, `lastOpName`, last matrix/vector result, optional `result.txt` |
+
+**Gaussian elimination (preferred for all `n ≤ 10`):** for each column, select the largest-magnitude pivot below the diagonal, swap rows, scale, and eliminate. Determinant is the signed product of pivots. Inverse and solve use the same pivot strategy on an augmented matrix.
+
+**Adjoint:** for small `n`, cofactors match the course worksheet. For larger invertible matrices, `Inv * det` yields the adjugate without building every minor explicitly.
+
+Includes: `<iostream> <iomanip> <cmath> <fstream> <cstring>`. No C++20 requirement.
+
+---
+
+## Menu map
+
+```
+┌─ COURSE ──────────────────────────────────────┐
+│ 1 Display · 2 Symmetric · 3 Identity          │
+│ 4 Det · 5 Adjoint · 6 Inverse · 7 Ax=b · 8 Exit│
+├─ EXTRAS ──────────────────────────────────────┤
+│ 9 Transpose · 10 + · 11 − · 12 * · 13 scalar  │
+│ 14 Trace · 15 Rank · 16 Samples · 17 Banner   │
+│ 18 Save result.txt · 19 History               │
+└───────────────────────────────────────────────┘
+         Y / N / 0  after each operation
+```
+
+---
+
+## Build & run
+
+### Visual Studio 2022 (recommended)
+
+1. Open `PF_Project_2.sln`
+2. Configuration: **Release** · Platform: **x64**
+3. Build Solution (`Ctrl+Shift+B`)
+4. Run `x64\Release\PF_Project_2.exe`
+
+MSBuild (Community 2022 full path):
+
+```bat
+"C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" PF_Project_2.sln /p:Configuration=Release /p:Platform=x64
+```
+
+### g++
+
+```bash
+g++ -std=c++17 -O2 -o MatrixCalc Source.cpp
+./MatrixCalc
+```
+
+---
+
+## Test cases (worked examples)
+
+| Case | Input | Expected |
+|------|--------|----------|
+| Det 2×2 | `[[2,1],[5,3]]` | `det = 1` |
+| Inv 2×2 | same | `[[3,-1],[-5,2]]` |
+| Adj 2×2 | same | `[[3,-1],[-5,2]]` |
+| Solve | `A` above, `b = [1,1]` | `x = [2, -3]` |
+| Det 3×3 | `[[1,2,3],[0,1,4],[5,6,0]]` | `det = 1` |
+| Trace | same 3×3 | `trace = 2` |
+| Rank full | same 3×3 | `rank = 3` |
+| Singular | `[[1,2,3],[2,4,6],[1,1,1]]` | `det = 0`, inverse refused, `rank = 2` |
+| Symmetric | `[[2,1,0],[1,3,4],[0,4,5]]` | reports **SYMMETRIC** |
+| Identity | `I₃` | reports identity |
+| Size guard | `12` or `0` | error; re-prompt until `1..10` |
+| Multiply | `[[1,2],[3,4]] * [[2,0],[1,2]]` | `[[4,4],[10,8]]` |
+
+---
+
+## Comparison: old bugs fixed
+
+| Issue in original | Fix in this rewrite |
+|-------------------|---------------------|
+| Menu text said “1-7” while case 8 existed | Menu clearly lists **1–19**; course DNA 1–8 intact |
+| `goto New / cont / terminate` (fragile) | Nested `while` loops + flags |
+| No size validation | Size must be **1..10** |
+| Identity `bool a` uninitialized | `isId = true` then disprove |
+| Det / inv / solve only for 2×2 & 3×3 | GE for **all n ≤ 10** |
+| Integer matrices + integer division on inverse | **`double` throughout**; formatted output |
+| Adjoint / inverse / solve **overwrote** `A` | Ops use temps; `A` preserved |
+| Shared `deter` vs local shadowing | Shared `lastDet` updated by GE |
+| Symmetric only hardcoded for n=2,3 | Full pairwise compare for all `n` |
+| `Ax=b` wrong loop bounds for `b` | Correct **n×1** vector input |
+| 3×3 adjoint print typo (`Matrix[1][2]` twice) | Correct row/column print of temp adjugate |
+| No extras | Transpose, ±, *, scalar, trace, rank, samples, save, history |
 
 ---
 
 ## Author
 
-**Mohammad Rohaan** · roll **22I-2327** · GitHub [rohaan2802](https://github.com/rohaan2802)
+**Mohammad Rohaan** · Roll **22I-2327** · Programming Fundamentals square-matrix project (professional rebuild).
