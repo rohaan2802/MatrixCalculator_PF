@@ -148,6 +148,8 @@ python docs/generate_screenshots.py
 ### 30 — Complete feature map
 ![30 complete feature map](docs/screenshots/30-complete-feature-map.png)
 
+Full menu map plus numerical engine note: **GE = Gaussian Elimination** (with partial pivoting), supported for all square sizes **n = 1 … 10** (`n ≤ 10`), used for determinant, inverse, `Ax = b`, and rank.
+
 ---
 
 ## Architecture / algorithms
