@@ -11,7 +11,7 @@ Professional **square-matrix console calculator** for Programming Fundamentals �
 
 ## Visual walkthrough
 
-Open the [Screenshot gallery](#screenshot-gallery) below for an end-to-end tour: banner and menu, validated size entry, matrix input, course operations 1–7, singular-matrix handling, continue prompt, sample presets, and a full session demo.
+Open the [Screenshot gallery](#screenshot-gallery) below for an end-to-end tour (~30 screenshots): banner and menu, validated size entry, matrix input, course operations 1–7, extras (addition through history), singular solve, 4×4 GE determinant, save/`result.txt`, continue Y vs N, and a complete feature map.
 
 Regenerate images anytime:
 
@@ -107,6 +107,42 @@ python docs/generate_screenshots.py
 
 ### 18 — Full session demo
 ![18 full session demo](docs/screenshots/18-full-session-demo.png)
+
+### 19 — Matrix addition
+![19 matrix addition](docs/screenshots/19-matrix-addition.png)
+
+### 20 — Matrix subtraction
+![20 matrix subtraction](docs/screenshots/20-matrix-subtraction.png)
+
+### 21 — Scalar multiplication
+![21 scalar multiply](docs/screenshots/21-scalar-multiply.png)
+
+### 22 — Asymmetric check
+![22 asymmetric check](docs/screenshots/22-asymmetric-check.png)
+
+### 23 — Determinant 4×4 (GE)
+![23 det 4x4 ge](docs/screenshots/23-det-4x4-ge.png)
+
+### 24 — Solve singular system
+![24 solve singular](docs/screenshots/24-solve-singular.png)
+
+### 25 — Save result.txt
+![25 save result file](docs/screenshots/25-save-result-file.png)
+
+### 26 — Operation history
+![26 operation history](docs/screenshots/26-operation-history.png)
+
+### 27 — Invalid size error
+![27 invalid size error](docs/screenshots/27-invalid-size-error.png)
+
+### 28 — New matrix prompt (N)
+![28 new matrix prompt](docs/screenshots/28-new-matrix-prompt.png)
+
+### 29 — Trace-only demo
+![29 trace only demo](docs/screenshots/29-trace-only-demo.png)
+
+### 30 — Complete feature map
+![30 complete feature map](docs/screenshots/30-complete-feature-map.png)
 
 ---
 
