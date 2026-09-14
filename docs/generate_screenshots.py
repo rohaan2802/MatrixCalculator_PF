@@ -2,7 +2,7 @@
 """
 Generate console-style dark-panel screenshots for MatrixCalculator_PF README.
 Requires: Pillow  (pip install Pillow)
-Output: docs/screenshots/01-...png through 18-...png
+Output: docs/screenshots/01-...png through 30-...png
 """
 
 from pathlib import Path
@@ -86,7 +86,7 @@ def shot(name, title, lines, height=None):
     save(img, name)
 
 
-# ---- 18 screenshots ----
+# ---- 01–30 screenshots ----
 
 shot(
     "01-main-banner-menu.png",
@@ -383,6 +383,240 @@ shot(
         ("  Professional PF calculator · 22I-2327", TITLE),
     ],
     height=520,
+)
+
+# ---- coverage gaps: arithmetic, asymmetric, 4x4 GE, singular solve,
+#      save/history, size error focus, N-path, trace-only, feature map ----
+
+shot(
+    "19-matrix-addition.png",
+    "19  Option 10 — Matrix addition A + B",
+    [
+        ("  Choose option [1-19]: 10", PROMPT),
+        "",
+        "  Enter matrix B (2x2) for A + B:",
+        ("  B[1,1] >> 1", PROMPT),
+        ("  B[1,2] >> 0", PROMPT),
+        ("  B[2,1] >> 0", PROMPT),
+        ("  B[2,2] >> 1", PROMPT),
+        "",
+        "  A = [[2,1],[5,3]]   B = [[1,0],[0,1]]",
+        "  --- A + B ---",
+        "  |    3.000000    1.000000  |",
+        "  |    5.000000    4.000000  |",
+        "",
+        ("  Last operation : Addition A+B", DIM),
+    ],
+)
+
+shot(
+    "20-matrix-subtraction.png",
+    "20  Option 11 — Matrix subtraction A − B",
+    [
+        ("  Choose option [1-19]: 11", PROMPT),
+        "",
+        "  Enter matrix B (2x2) for A - B:",
+        ("  B[1,1] >> 1", PROMPT),
+        ("  B[1,2] >> 1", PROMPT),
+        ("  B[2,1] >> 1", PROMPT),
+        ("  B[2,2] >> 1", PROMPT),
+        "",
+        "  A = [[2,1],[5,3]]   B = [[1,1],[1,1]]",
+        "  --- A - B ---",
+        "  |    1.000000    0.000000  |",
+        "  |    4.000000    2.000000  |",
+        "",
+        ("  Last operation : Subtraction A-B", DIM),
+    ],
+)
+
+shot(
+    "21-scalar-multiply.png",
+    "21  Option 13 — Scalar multiplication k · A",
+    [
+        ("  Choose option [1-19]: 13", PROMPT),
+        ("  Enter scalar k >> 2.5", PROMPT),
+        "",
+        "  A = [[2,1],[5,3]]",
+        "  --- k * A ---",
+        "  |    5.000000    2.500000  |",
+        "  |   12.500000    7.500000  |",
+        "",
+        ("  Last operation : Scalar multiply", DIM),
+        "  Working matrix A is unchanged.",
+    ],
+)
+
+shot(
+    "22-asymmetric-check.png",
+    "22  Option 2 — Asymmetric matrix (NOT symmetric)",
+    [
+        "  --- Original A ---",
+        "  |    1.000000    2.000000  |",
+        "  |    3.000000    4.000000  |",
+        "",
+        "  --- Transpose A^T ---",
+        "  |    1.000000    3.000000  |",
+        "  |    2.000000    4.000000  |",
+        "",
+        ("  Result: A is NOT symmetric.", RED),
+        "",
+        "  Full pairwise A[i][j] == A[j][i] for all n (not only 2/3).",
+    ],
+)
+
+shot(
+    "23-det-4x4-ge.png",
+    "23  Option 4 — Determinant 4×4 (partial-pivoting GE)",
+    [
+        "  A (4x4 diagonal) = diag(1, 2, 3, 4)",
+        "  --- Matrix A ---",
+        "  |    1.000000    0.000000    0.000000    0.000000  |",
+        "  |    0.000000    2.000000    0.000000    0.000000  |",
+        "  |    0.000000    0.000000    3.000000    0.000000  |",
+        "  |    0.000000    0.000000    0.000000    4.000000  |",
+        "",
+        ("  Determinant (Gaussian elimination) = 24.000000", GREEN),
+        ("  (stored in lastDet = 24.000000)", DIM),
+        "",
+        "  GE + partial pivoting supports all n in 1..10 (not only 2×2 / 3×3).",
+    ],
+    height=560,
+)
+
+shot(
+    "24-solve-singular.png",
+    "24  Option 7 — Singular / inconsistent Ax = b",
+    [
+        "  Loaded singular 3x3 (row2 = 2*row1).",
+        "  --- Coefficient matrix A ---",
+        "  |    1.000000    2.000000    3.000000  |",
+        "  |    2.000000    4.000000    6.000000  |",
+        "  |    1.000000    1.000000    1.000000  |",
+        "",
+        "  Enter 3 entries for b (n x 1)",
+        ("  b[1] >> 1", PROMPT),
+        ("  b[2] >> 2", PROMPT),
+        ("  b[3] >> 1", PROMPT),
+        "",
+        ("  [Error] No unique solution (singular / inconsistent system).", RED),
+        "",
+        "  Distinct from inverse refuse: solve reports no unique x.",
+    ],
+)
+
+shot(
+    "25-save-result-file.png",
+    "25  Option 18 — Save last result to result.txt",
+    [
+        ("  Choose option [1-19]: 18", PROMPT),
+        "",
+        ("  Saved last result to result.txt", GREEN),
+        ("  Last operation : Save result.txt", DIM),
+        "",
+        "  --- Contents of result.txt (excerpt) ---",
+        ("  MatrixCalculator_PF — last result", YELLOW),
+        "  Operation: Inverse",
+        "  Matrix 2x2:",
+        "         3.00000000   -1.00000000",
+        "        -5.00000000    2.00000000",
+        "  lastDet = 1.00000000",
+        "",
+        "  Optional dump of the last stored matrix or vector result.",
+    ],
+)
+
+shot(
+    "26-operation-history.png",
+    "26  Option 19 — Operation history",
+    [
+        ("  Choose option [1-19]: 19", PROMPT),
+        "",
+        ("  Last operation name: Inverse", GREEN),
+        "  Last result was a 2x2 matrix:",
+        "  |    3.000000   -1.000000  |",
+        "  |   -5.000000    2.000000  |",
+        "",
+        "  History recalls the last operation name and last numeric result",
+        "  (matrix or vector). Does not overwrite working matrix A.",
+    ],
+)
+
+shot(
+    "27-invalid-size-error.png",
+    "27  Size validation — out-of-range / non-integer",
+    [
+        ("  ENTER THE SIZE OF THE SQUARE MATRIX (1..10): -1", YELLOW),
+        ("  [Error] Value must be in [1 .. 10].", RED),
+        ("  ENTER THE SIZE OF THE SQUARE MATRIX (1..10): 11", YELLOW),
+        ("  [Error] Value must be in [1 .. 10].", RED),
+        ("  ENTER THE SIZE OF THE SQUARE MATRIX (1..10): abc", YELLOW),
+        ("  [Error] Invalid integer. Try again.", RED),
+        ("  ENTER THE SIZE OF THE SQUARE MATRIX (1..10): 4", GREEN),
+        "",
+        "  Loop re-prompts until a valid size in [1 .. 10] is accepted.",
+        ("  Capacity: const int N = 10", DIM),
+    ],
+)
+
+shot(
+    "28-new-matrix-prompt.png",
+    "28  Continue — N loads a new matrix",
+    [
+        "  ------------------------------------------------------------",
+        "  Continue?  Y = same matrix  |  N = new matrix  |  0 = exit",
+        ("  >>>>>>> N", PROMPT),
+        "",
+        "  Restart: prompt new size + new entries.",
+        "",
+        ("  ENTER THE SIZE OF THE SQUARE MATRIX (1..10): 2", GREEN),
+        "========================================",
+        "  Enter 4 entries for A (2x2)",
+        "========================================",
+        ("  A[1,1] >> 2", PROMPT),
+        ("  A[1,2] >> 1", PROMPT),
+        ("  A[2,1] >> 5", PROMPT),
+        ("  A[2,2] >> 3", PROMPT),
+        "",
+        "  Y keeps A; N rebuilds A; 0 exits (no goto).",
+    ],
+)
+
+shot(
+    "29-trace-only-demo.png",
+    "29  Option 14 — Trace (diagonal sum only)",
+    [
+        ("  Choose option [1-19]: 14", PROMPT),
+        "",
+        "  A = [[1,2,3],[0,1,4],[5,6,0]]",
+        "  Diagonal: 1 + 1 + 0",
+        ("  Trace(A) = 2.000000", GREEN),
+        "",
+        ("  Last operation : Trace", DIM),
+        "  Stored as last scalar result (separate from rank).",
+    ],
+)
+
+shot(
+    "30-complete-feature-map.png",
+    "30  Complete feature map (course + extras)",
+    [
+        ("  COURSE  1–8", TITLE),
+        "    1 Display · 2 Symmetric · 3 Identity · 4 Det",
+        "    5 Adjoint · 6 Inverse · 7 Ax=b · 8 Exit",
+        "",
+        ("  EXTRAS  9–19", TITLE),
+        "    9 Transpose · 10 + · 11 − · 12 * · 13 scalar",
+        "    14 Trace · 15 Rank · 16 Samples · 17 Banner",
+        "    18 Save result.txt · 19 History",
+        "",
+        ("  SESSION", TITLE),
+        "    Y same matrix · N new matrix · 0 exit",
+        "    A never overwritten · GE for all n ≤ 10 · double I/O",
+        "",
+        ("  Screenshot gallery: 01–30  ·  22I-2327", GREEN),
+    ],
+    height=580,
 )
 
 
