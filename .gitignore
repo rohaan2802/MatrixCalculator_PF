@@ -98,6 +98,14 @@ StyleCopReport.xml
 *.svclog
 *.scc
 
+# MSVC / local build leftovers (keep source tree clean)
+*.exe
+*.tlog
+*.recipe
+*.idb
+*.lastbuildstate
+Browse.VC.db
+
 # Chutzpah Test files
 _Chutzpah*
 
