@@ -54,7 +54,7 @@ python docs/generate_screenshots.py
 
 ## Screenshot gallery
 
-### 01 — Main banner + menu
+### 01 — Main banner + full detailed menu listing 1–19
 ![01 main banner menu](docs/screenshots/01-main-banner-menu.png)
 
 ### 02 — Size input (1..10 validation)
