@@ -10,11 +10,59 @@
 #include <cmath>
 #include <fstream>
 #include <cstring>
+#ifdef _WIN32
+#include <windows.h>
+#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#endif
+#endif
 
 using namespace std;
 
 const int N = 10;
 const double EPS = 1e-9;
+
+/* ---------- console colors (real Windows terminal) ---------- */
+enum ConColor {
+    C_RESET = 0,
+    C_TITLE,
+    C_OK,
+    C_WARN,
+    C_ERR,
+    C_DIM,
+    C_PROMPT,
+    C_HIGH
+};
+
+void setColor(ConColor c) {
+#ifdef _WIN32
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    WORD attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
+    switch (c) {
+    case C_TITLE:  attr = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
+    case C_OK:     attr = FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
+    case C_WARN:   attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
+    case C_ERR:    attr = FOREGROUND_RED | FOREGROUND_INTENSITY; break;
+    case C_DIM:    attr = FOREGROUND_INTENSITY; break;
+    case C_PROMPT: attr = FOREGROUND_BLUE | FOREGROUND_INTENSITY; break;
+    case C_HIGH:   attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY; break;
+    default:       attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE; break;
+    }
+    SetConsoleTextAttribute(h, attr);
+#else
+    (void)c;
+#endif
+}
+
+void enableConsoleUtf8() {
+#ifdef _WIN32
+    SetConsoleOutputCP(65001);
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD mode = 0;
+    if (GetConsoleMode(h, &mode))
+        SetConsoleMode(h, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+#endif
+}
 
 /* ---------- shared session state ---------- */
 double lastDet = 0.0;
@@ -50,21 +98,38 @@ void zeroMatrix(double M[N][N], int n) {
 }
 
 void printMatrix(const double M[N][N], int rows, int cols, int prec = 6) {
+    setColor(C_DIM);
+    cout << "        ";
+    for (int j = 0; j < cols; j++) {
+        cout << setw(11) << "c" << (j + 1);
+    }
+    cout << "\n";
+    setColor(C_RESET);
+
     cout << fixed << setprecision(prec);
     for (int i = 0; i < rows; i++) {
-        cout << "  |";
+        setColor(C_DIM);
+        cout << "  r" << (i + 1) << "  ";
+        setColor(C_HIGH);
+        cout << "|";
         for (int j = 0; j < cols; j++) {
             cout << setw(12) << M[i][j];
         }
         cout << "  |\n";
     }
+    setColor(C_RESET);
     cout << defaultfloat;
 }
 
 void printVector(const double v[], int n, int prec = 6) {
     cout << fixed << setprecision(prec);
-    for (int i = 0; i < n; i++)
-        cout << "  x[" << (i + 1) << "] = " << setw(12) << v[i] << "\n";
+    for (int i = 0; i < n; i++) {
+        setColor(C_OK);
+        cout << "  x[" << (i + 1) << "] = ";
+        setColor(C_HIGH);
+        cout << setw(12) << v[i] << "\n";
+    }
+    setColor(C_RESET);
     cout << defaultfloat;
 }
 
@@ -98,65 +163,117 @@ void storeLastScalar(double value, const char* opName) {
 }
 
 bool readIntInRange(const char* prompt, int lo, int hi, int& out) {
+    setColor(C_PROMPT);
     cout << prompt;
+    setColor(C_RESET);
     if (!(cin >> out)) {
         cin.clear();
         cin.ignore(10000, '\n');
-        cout << "  [Error] Invalid integer. Try again.\n";
+        setColor(C_ERR);
+        cout << "  [Error] Invalid integer. Please type a whole number.\n";
+        setColor(C_RESET);
         return false;
     }
     if (out < lo || out > hi) {
-        cout << "  [Error] Value must be in [" << lo << " .. " << hi << "].\n";
+        setColor(C_ERR);
+        cout << "  [Error] Value must be between " << lo << " and " << hi << ".\n";
+        setColor(C_RESET);
         return false;
     }
+    setColor(C_OK);
+    cout << "  [OK] Accepted: " << out << "\n";
+    setColor(C_RESET);
     return true;
 }
 
 bool readDouble(const char* prompt, double& out) {
+    setColor(C_PROMPT);
     cout << prompt;
+    setColor(C_RESET);
     if (!(cin >> out)) {
         cin.clear();
         cin.ignore(10000, '\n');
-        cout << "  [Error] Invalid number. Try again.\n";
+        setColor(C_ERR);
+        cout << "  [Error] Invalid number. Try again (example: 3.5).\n";
+        setColor(C_RESET);
         return false;
     }
     return true;
 }
 
 void inputMatrix(double A[N][N], int n) {
-    cout << "\n========================================\n";
-    cout << "  Enter " << (n * n) << " entries for A (" << n << "x" << n << ")\n";
-    cout << "========================================\n";
+    setColor(C_TITLE);
+    cout << "\n  =====================================================================\n";
+    cout << "   INPUT MATRIX A  (" << n << " x " << n << ")   —  total entries: " << (n * n) << "\n";
+    cout << "  =====================================================================\n";
+    setColor(C_DIM);
+    cout << "   Tip: enter numbers one by one. Decimals allowed (e.g. 2.5).\n";
+    cout << "   Invalid input will be rejected and you can retry that cell.\n\n";
+    setColor(C_RESET);
+
     for (int i = 0; i < n; i++) {
+        setColor(C_WARN);
+        cout << "  --- Row " << (i + 1) << " of " << n << " ---\n";
+        setColor(C_RESET);
         for (int j = 0; j < n; j++) {
             double val;
-            cout << "  A[" << (i + 1) << "," << (j + 1) << "] >> ";
+            setColor(C_PROMPT);
+            cout << "    A[" << (i + 1) << "][" << (j + 1) << "]  >>  ";
+            setColor(C_RESET);
             while (!(cin >> val)) {
                 cin.clear();
                 cin.ignore(10000, '\n');
-                cout << "  [Error] Invalid number. Try again.\n";
-                cout << "  A[" << (i + 1) << "," << (j + 1) << "] >> ";
+                setColor(C_ERR);
+                cout << "    [Error] Not a number. Re-enter A[" << (i + 1) << "][" << (j + 1) << "] >> ";
+                setColor(C_RESET);
             }
             A[i][j] = val;
+            setColor(C_OK);
+            cout << "    stored: " << fixed << setprecision(4) << val << defaultfloat << "\n";
+            setColor(C_RESET);
         }
+        cout << "\n";
     }
+
+    setColor(C_OK);
+    cout << "  ---------------------------------------------------------------------\n";
+    cout << "   INPUT COMPLETE — preview of matrix A:\n";
+    cout << "  ---------------------------------------------------------------------\n";
+    setColor(C_RESET);
+    printMatrix(A, n, n);
+    cout << "\n";
 }
 
 void inputVector(double b[N], int n) {
-    cout << "\n========================================\n";
-    cout << "  Enter " << n << " entries for b (n x 1)\n";
-    cout << "========================================\n";
+    setColor(C_TITLE);
+    cout << "\n  =====================================================================\n";
+    cout << "   INPUT VECTOR b  (" << n << " x 1)  for system  A x = b\n";
+    cout << "  =====================================================================\n\n";
+    setColor(C_RESET);
     for (int i = 0; i < n; i++) {
         double val;
-        cout << "  b[" << (i + 1) << "] >> ";
+        setColor(C_PROMPT);
+        cout << "    b[" << (i + 1) << "]  >>  ";
+        setColor(C_RESET);
         while (!(cin >> val)) {
             cin.clear();
             cin.ignore(10000, '\n');
-            cout << "  [Error] Invalid number. Try again.\n";
-            cout << "  b[" << (i + 1) << "] >> ";
+            setColor(C_ERR);
+            cout << "    [Error] Invalid number. Re-enter b[" << (i + 1) << "] >> ";
+            setColor(C_RESET);
         }
         b[i] = val;
+        setColor(C_OK);
+        cout << "    stored: " << fixed << setprecision(4) << val << defaultfloat << "\n";
+        setColor(C_RESET);
     }
+    setColor(C_OK);
+    cout << "\n   Vector b preview:\n";
+    setColor(C_RESET);
+    for (int i = 0; i < n; i++) {
+        cout << "    | " << setw(12) << fixed << setprecision(6) << b[i] << " |\n";
+    }
+    cout << defaultfloat << "\n";
 }
 
 /* ---------- Gaussian elimination (partial pivoting) ---------- */
@@ -366,6 +483,7 @@ bool adjointViaInverse(const double A[N][N], int n, double Adj[N][N]) {
 
 /* ---------- UI ---------- */
 void printBanner() {
+    setColor(C_OK);
     cout << "\n\n";
     cout << "  =====================================================================\n";
     cout << "  ||                                                                 ||\n";
@@ -376,16 +494,23 @@ void printBanner() {
     cout << "  ||         Author: Mohammad Rohaan  ·  Roll 22I-2327                ||\n";
     cout << "  ||                                                                 ||\n";
     cout << "  =====================================================================\n\n";
+    setColor(C_RESET);
 }
 
 void printMenu() {
+    setColor(C_DIM);
     cout << "\n";
     cout << "  ---------------------------------------------------------------------\n";
+    setColor(C_TITLE);
     cout << "   Status\n";
+    setColor(C_HIGH);
     cout << "     Last operation : " << lastOpName << "\n";
+    setColor(C_DIM);
     cout << "  ---------------------------------------------------------------------\n\n";
 
+    setColor(C_TITLE);
     cout << "   ========================  COURSE MENU (1-8)  ========================\n\n";
+    setColor(C_HIGH);
     cout << "     1.  Display matrix A\n";
     cout << "     2.  Symmetric check          (also prints transpose)\n";
     cout << "     3.  Identity check\n";
@@ -395,7 +520,9 @@ void printMenu() {
     cout << "     7.  Solve linear system      Ax = b\n";
     cout << "     8.  Exit program\n\n";
 
+    setColor(C_TITLE);
     cout << "   ========================  EXTRA TOOLS (9-19)  ========================\n\n";
+    setColor(C_HIGH);
     cout << "     9.  Transpose of A\n";
     cout << "    10.  Matrix addition          A + B\n";
     cout << "    11.  Matrix subtraction       A - B\n";
@@ -408,9 +535,13 @@ void printMenu() {
     cout << "    18.  Save last result         -> result.txt\n";
     cout << "    19.  Show last operation history\n\n";
 
+    setColor(C_DIM);
     cout << "  ---------------------------------------------------------------------\n";
+    setColor(C_WARN);
     cout << "   Enter option number (1 to 19)\n";
+    setColor(C_PROMPT);
     cout << "  > ";
+    setColor(C_RESET);
 }
 
 /* ---------- operations (A is NEVER overwritten) ---------- */
@@ -747,6 +878,7 @@ void opHistory() {
 
 /* ---------- main: clean loops, no goto ---------- */
 int main() {
+    enableConsoleUtf8();
     printBanner();
 
     bool running = true;
@@ -810,9 +942,17 @@ int main() {
                 break;
 
             /* continue prompt: Y same / N new / 0 exit */
-            cout << "\n  ------------------------------------------------------------\n";
-            cout << "  Continue?  Y = same matrix  |  N = new matrix  |  0 = exit\n";
+            setColor(C_DIM);
+            cout << "\n  ---------------------------------------------------------------------\n";
+            setColor(C_WARN);
+            cout << "  Continue?\n";
+            setColor(C_HIGH);
+            cout << "     Y  = keep working on the SAME matrix A\n";
+            cout << "     N  = enter a NEW matrix\n";
+            cout << "     0  = EXIT program\n";
+            setColor(C_PROMPT);
             cout << "  >>>>>>> ";
+            setColor(C_RESET);
             char ch;
             if (!(cin >> ch)) {
                 cin.clear();

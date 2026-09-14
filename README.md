@@ -13,6 +13,10 @@ Professional **square-matrix console calculator** for Programming Fundamentals �
 
 Open the [Screenshot gallery](#screenshot-gallery) below for an end-to-end tour (~30 screenshots): banner and menu, validated size entry, matrix input, course operations 1–7, extras (addition through history), singular solve, 4×4 GE determinant, save/`result.txt`, continue Y vs N, and a complete feature map.
 
+**About colors:** Gallery panels are stylized for README readability. The live Windows build uses the same layout and **real console colors** via `SetConsoleTextAttribute` (green titles, cyan prompts, red errors, bright matrix values). Run `PF_Project_2.exe` in a normal Command Prompt / Windows Terminal to see them.
+
+Detailed I/O in the live app includes: row-by-row entry with per-cell confirmation, matrix preview after input, labeled `r#`/`c#` output grids, and a clear Y / N / 0 continue prompt.
+
 Regenerate images anytime:
 
 ```bash
