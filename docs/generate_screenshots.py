@@ -522,7 +522,7 @@ shot(
     [
         ("  Enter your choice: 18", PROMPT),
         "",
-        ("  Saved last result to result.txt (block format).", GREEN),
+        ("  Saved last result to result.txt", GREEN),
         "",
         "  --- Contents of result.txt (excerpt) ---",
         ("  ==============================================", YELLOW),
