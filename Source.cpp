@@ -259,46 +259,59 @@ void zeroMatrix(double M[N][N], int n) {
             M[i][j] = 0.0;
 }
 
+/* Fixed label "  Row ## |" so Column headers line up with every size 1..10. */
+const int MATRIX_LABEL_W = 10; /* strlen("  Row 10 |") with setw(2) on row # */
+
+int matrixCellWidth(int prec) {
+    int w = prec + 10; /* sign + digits + '.' + decimals + padding */
+    if (w < 14)
+        w = 14;
+    return w;
+}
+
 void writeMatrixGrid(ostream& out, const double M[N][N], int rows, int cols, int prec = 6) {
+    const int cellW = matrixCellWidth(prec);
     out << fixed << setprecision(prec);
-    out << "\n        ";
+    out << "\n" << string(MATRIX_LABEL_W, ' ');
     for (int j = 0; j < cols; j++)
-        out << setw(14) << ("Column " + to_string(j + 1));
+        out << setw(cellW) << ("Column " + to_string(j + 1));
     out << "\n";
     for (int i = 0; i < rows; i++) {
-        out << "  Row " << (i + 1) << "  |";
+        out << "  Row " << setw(2) << (i + 1) << " |";
         for (int j = 0; j < cols; j++)
-            out << setw(14) << M[i][j];
+            out << setw(cellW) << M[i][j];
         out << "  |\n";
     }
     out << "\n" << defaultfloat;
 }
 
 void writeVectorList(ostream& out, const double v[], int n, const char* label, int prec = 6) {
+    const int cellW = matrixCellWidth(prec);
     out << fixed << setprecision(prec);
     out << "\n";
     for (int i = 0; i < n; i++)
-        out << "  " << label << " " << (i + 1) << "  =  " << setw(14) << v[i] << "\n";
+        out << "  " << label << " " << setw(2) << (i + 1) << "  =  " << setw(cellW) << v[i] << "\n";
     out << "\n" << defaultfloat;
 }
 
 void printMatrix(const double M[N][N], int rows, int cols, int prec = 6) {
+    const int cellW = matrixCellWidth(prec);
     setColor(C_DIM);
     cout << "\n  Matrix (" << rows << " x " << cols << "):\n";
-    cout << "        ";
+    cout << string(MATRIX_LABEL_W, ' ');
     for (int j = 0; j < cols; j++)
-        cout << setw(14) << ("Column " + to_string(j + 1));
+        cout << setw(cellW) << ("Column " + to_string(j + 1));
     cout << "\n";
     setColor(C_RESET);
 
     cout << fixed << setprecision(prec);
     for (int i = 0; i < rows; i++) {
         setColor(C_DIM);
-        cout << "  Row " << (i + 1) << "  ";
+        cout << "  Row " << setw(2) << (i + 1) << " ";
         setColor(C_HIGH);
         cout << "|";
         for (int j = 0; j < cols; j++)
-            cout << setw(14) << M[i][j];
+            cout << setw(cellW) << M[i][j];
         cout << "  |\n";
     }
     setColor(C_RESET);
@@ -306,13 +319,14 @@ void printMatrix(const double M[N][N], int rows, int cols, int prec = 6) {
 }
 
 void printVector(const double v[], int n, int prec = 6) {
+    const int cellW = matrixCellWidth(prec);
     cout << fixed << setprecision(prec);
     cout << "\n";
     for (int i = 0; i < n; i++) {
         setColor(C_OK);
-        cout << "  Entry " << (i + 1) << "  =  ";
+        cout << "  Entry " << setw(2) << (i + 1) << "  =  ";
         setColor(C_HIGH);
-        cout << setw(14) << v[i] << "\n";
+        cout << setw(cellW) << v[i] << "\n";
     }
     setColor(C_RESET);
     cout << defaultfloat << "\n";
