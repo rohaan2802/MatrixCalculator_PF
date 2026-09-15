@@ -289,18 +289,8 @@ int matrixCellWidthFor(const double M[N][N], int rows, int cols, int prec) {
     return cellW;
 }
 
-void writeCenteredInWidth(ostream& out, const string& text, int width) {
-    int n = (int)text.size();
-    if (n >= width) {
-        out << text.substr(0, width);
-        return;
-    }
-    int left = (width - n) / 2;
-    out << string(left, ' ') << text << string(width - n - left, ' ');
-}
-
 void writeMatrixGrid(ostream& out, const double M[N][N], int rows, int cols, int prec = 6) {
-    /* Text file: wider columns so it is not congested; headers centered on values. */
+    /* Text file: wider columns (not congested); same right-align as values. */
     int cellW = matrixCellWidthFor(M, rows, cols, prec);
     if (cellW < 14)
         cellW = 14;
@@ -309,7 +299,7 @@ void writeMatrixGrid(ostream& out, const double M[N][N], int rows, int cols, int
     out << fixed << setprecision(prec);
     out << "\n" << string(MATRIX_LABEL_W, ' ');
     for (int j = 0; j < cols; j++)
-        writeCenteredInWidth(out, "Column " + to_string(j + 1), cellW);
+        out << setw(cellW) << ("Column " + to_string(j + 1));
     out << "\n";
     for (int i = 0; i < rows; i++) {
         out << "  Row " << setw(2) << (i + 1) << " |";
