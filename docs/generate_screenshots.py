@@ -517,11 +517,11 @@ shot(
         "    Last step : Inverse",
         "    Result type : Matrix (2 x 2)",
         "",
-        "               Column 1      Column 2",
-        "  Row 1  |      3.000000     -1.000000  |",
-        "  Row 2  |     -5.000000      2.000000  |",
+        "                  Column 1        Column 2",
+        "  Row  1 |       -2.000000        1.000000  |",
+        "  Row  2 |        1.500000       -0.500000  |",
         "",
-        "  Last determinant : 1.00000000",
+        "  Last determinant : -2.00000000",
     ],
 )
 
@@ -535,9 +535,9 @@ shot(
         "  Last result (matrix 2 x 2):",
         "",
         ("  Matrix (2 x 2):", DIM),
-        "               Column 1      Column 2",
-        "  Row 1  |      3.000000     -1.000000  |",
-        "  Row 2  |     -5.000000      2.000000  |",
+        "                  Column 1        Column 2",
+        "  Row  1 |       -2.000000        1.000000  |",
+        "  Row  2 |        1.500000       -0.500000  |",
     ],
 )
 
