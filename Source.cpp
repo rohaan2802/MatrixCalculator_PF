@@ -10,6 +10,7 @@
 #include <cmath>
 #include <fstream>
 #include <string>
+#include <sstream>
 #include <cctype>
 #include <cstdlib>
 #include <cstdio>
@@ -260,17 +261,36 @@ void zeroMatrix(double M[N][N], int n) {
 }
 
 /* Fixed label "  Row ## |" so Column headers line up with every size 1..10. */
-const int MATRIX_LABEL_W = 10; /* strlen("  Row 10 |") with setw(2) on row # */
+const int MATRIX_LABEL_W = 10; /* "  Row " + 2 digits + " |" */
 
-int matrixCellWidth(int prec) {
-    int w = prec + 10; /* sign + digits + '.' + decimals + padding */
-    if (w < 14)
-        w = 14;
-    return w;
+/* Column width from real values + "Column N" so headers sit on the numbers. */
+int matrixCellWidthFor(const double M[N][N], int rows, int cols, int prec) {
+    int cellW = 0;
+    for (int j = 0; j < cols; j++) {
+        int hLen = (int)string("Column " + to_string(j + 1)).size();
+        if (hLen > cellW)
+            cellW = hLen;
+    }
+    ostringstream oss;
+    oss << fixed << setprecision(prec);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            oss.str("");
+            oss.clear();
+            oss << M[i][j];
+            int n = (int)oss.str().size();
+            if (n > cellW)
+                cellW = n;
+        }
+    }
+    cellW += 1; /* small gap between columns */
+    if (cellW < 10)
+        cellW = 10;
+    return cellW;
 }
 
 void writeMatrixGrid(ostream& out, const double M[N][N], int rows, int cols, int prec = 6) {
-    const int cellW = matrixCellWidth(prec);
+    const int cellW = matrixCellWidthFor(M, rows, cols, prec);
     out << fixed << setprecision(prec);
     out << "\n" << string(MATRIX_LABEL_W, ' ');
     for (int j = 0; j < cols; j++)
@@ -286,16 +306,15 @@ void writeMatrixGrid(ostream& out, const double M[N][N], int rows, int cols, int
 }
 
 void writeVectorList(ostream& out, const double v[], int n, const char* label, int prec = 6) {
-    const int cellW = matrixCellWidth(prec);
     out << fixed << setprecision(prec);
     out << "\n";
     for (int i = 0; i < n; i++)
-        out << "  " << label << " " << setw(2) << (i + 1) << "  =  " << setw(cellW) << v[i] << "\n";
+        out << "  " << label << " " << setw(2) << (i + 1) << "  =  " << setw(14) << v[i] << "\n";
     out << "\n" << defaultfloat;
 }
 
 void printMatrix(const double M[N][N], int rows, int cols, int prec = 6) {
-    const int cellW = matrixCellWidth(prec);
+    const int cellW = matrixCellWidthFor(M, rows, cols, prec);
     setColor(C_DIM);
     cout << "\n  Matrix (" << rows << " x " << cols << "):\n";
     cout << string(MATRIX_LABEL_W, ' ');
@@ -319,14 +338,13 @@ void printMatrix(const double M[N][N], int rows, int cols, int prec = 6) {
 }
 
 void printVector(const double v[], int n, int prec = 6) {
-    const int cellW = matrixCellWidth(prec);
     cout << fixed << setprecision(prec);
     cout << "\n";
     for (int i = 0; i < n; i++) {
         setColor(C_OK);
         cout << "  Entry " << setw(2) << (i + 1) << "  =  ";
         setColor(C_HIGH);
-        cout << setw(cellW) << v[i] << "\n";
+        cout << setw(14) << v[i] << "\n";
     }
     setColor(C_RESET);
     cout << defaultfloat << "\n";
@@ -1189,7 +1207,7 @@ void opSaveResult() {
         out << "  Value : " << lastResult[0][0] << "\n\n";
     } else {
         out << "\n  Result type : Matrix (" << lastResultRows << " x " << lastResultCols << ")\n";
-        writeMatrixGrid(out, lastResult, lastResultRows, lastResultCols, 8);
+        writeMatrixGrid(out, lastResult, lastResultRows, lastResultCols, 6);
     }
 
     out << "  Last determinant : " << lastDet << "\n";
