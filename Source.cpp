@@ -288,7 +288,7 @@ void writeVectorBlocks(ostream& out, const double v[], int n, const char* label,
 
 void printMatrix(const double M[N][N], int rows, int cols, int prec = 6) {
     setColor(C_DIM);
-    cout << "\n  Matrix (" << rows << " x " << cols << ") — one block per value:\n";
+    cout << "\n  Matrix (" << rows << " x " << cols << "):\n";
     setColor(C_RESET);
     cout << fixed << setprecision(prec);
     for (int i = 0; i < rows; i++) {
@@ -310,7 +310,7 @@ void printMatrix(const double M[N][N], int rows, int cols, int prec = 6) {
 
 void printVector(const double v[], int n, int prec = 6) {
     setColor(C_DIM);
-    cout << "\n  Answer list — one block per entry:\n";
+    cout << "\n  Answer list:\n";
     setColor(C_RESET);
     cout << fixed << setprecision(prec);
     for (int i = 0; i < n; i++) {
@@ -1196,7 +1196,7 @@ void opSaveResult() {
     out << "  +------------------------------------------+\n";
     out << "\n==============================================\n";
     out.close();
-    cout << "\n  Saved last result to result.txt (block format).\n";
+    cout << "\n  Saved last result to result.txt\n";
     setOpName("Save result.txt");
 }
 
