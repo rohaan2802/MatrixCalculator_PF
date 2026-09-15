@@ -259,72 +259,63 @@ void zeroMatrix(double M[N][N], int n) {
             M[i][j] = 0.0;
 }
 
-void writeMatrixBlocks(ostream& out, const double M[N][N], int rows, int cols, int prec = 6) {
+void writeMatrixGrid(ostream& out, const double M[N][N], int rows, int cols, int prec = 6) {
     out << fixed << setprecision(prec);
+    out << "\n        ";
+    for (int j = 0; j < cols; j++)
+        out << setw(14) << ("Column " + to_string(j + 1));
+    out << "\n";
     for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            out << "\n";
-            out << "  +------------------------------------------+\n";
-            out << "  |  Row " << (i + 1) << ", Column " << (j + 1) << "\n";
-            out << "  |  Value : " << M[i][j] << "\n";
-            out << "  +------------------------------------------+\n";
-        }
-        out << "\n";
+        out << "  Row " << (i + 1) << "  |";
+        for (int j = 0; j < cols; j++)
+            out << setw(14) << M[i][j];
+        out << "  |\n";
     }
-    out << defaultfloat;
+    out << "\n" << defaultfloat;
 }
 
-void writeVectorBlocks(ostream& out, const double v[], int n, const char* label, int prec = 6) {
+void writeVectorList(ostream& out, const double v[], int n, const char* label, int prec = 6) {
     out << fixed << setprecision(prec);
-    for (int i = 0; i < n; i++) {
-        out << "\n";
-        out << "  +------------------------------------------+\n";
-        out << "  |  " << label << " " << (i + 1) << "\n";
-        out << "  |  Value : " << v[i] << "\n";
-        out << "  +------------------------------------------+\n";
-    }
+    out << "\n";
+    for (int i = 0; i < n; i++)
+        out << "  " << label << " " << (i + 1) << "  =  " << setw(14) << v[i] << "\n";
     out << "\n" << defaultfloat;
 }
 
 void printMatrix(const double M[N][N], int rows, int cols, int prec = 6) {
     setColor(C_DIM);
     cout << "\n  Matrix (" << rows << " x " << cols << "):\n";
+    cout << "        ";
+    for (int j = 0; j < cols; j++)
+        cout << setw(14) << ("Column " + to_string(j + 1));
+    cout << "\n";
     setColor(C_RESET);
+
     cout << fixed << setprecision(prec);
     for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            setColor(C_TITLE);
-            cout << "\n  +------------------------------------------+\n";
-            setColor(C_HIGH);
-            cout << "  |  Row " << (i + 1) << ", Column " << (j + 1) << "\n";
-            setColor(C_OK);
-            cout << "  |  Value : " << M[i][j] << "\n";
-            setColor(C_TITLE);
-            cout << "  +------------------------------------------+\n";
-            setColor(C_RESET);
-        }
-        cout << "\n";
+        setColor(C_DIM);
+        cout << "  Row " << (i + 1) << "  ";
+        setColor(C_HIGH);
+        cout << "|";
+        for (int j = 0; j < cols; j++)
+            cout << setw(14) << M[i][j];
+        cout << "  |\n";
     }
-    cout << defaultfloat;
+    setColor(C_RESET);
+    cout << defaultfloat << "\n";
 }
 
 void printVector(const double v[], int n, int prec = 6) {
-    setColor(C_DIM);
-    cout << "\n  Answer list:\n";
-    setColor(C_RESET);
     cout << fixed << setprecision(prec);
+    cout << "\n";
     for (int i = 0; i < n; i++) {
-        setColor(C_TITLE);
-        cout << "\n  +------------------------------------------+\n";
-        setColor(C_HIGH);
-        cout << "  |  Entry " << (i + 1) << "\n";
         setColor(C_OK);
-        cout << "  |  Value : " << v[i] << "\n";
-        setColor(C_TITLE);
-        cout << "  +------------------------------------------+\n";
-        setColor(C_RESET);
+        cout << "  Entry " << (i + 1) << "  =  ";
+        setColor(C_HIGH);
+        cout << setw(14) << v[i] << "\n";
     }
-    cout << "\n" << defaultfloat;
+    setColor(C_RESET);
+    cout << defaultfloat << "\n";
 }
 
 void storeLastMatrix(const double M[N][N], int rows, int cols, const char* opName) {
@@ -1178,22 +1169,16 @@ void opSaveResult() {
 
     if (lastResultIsVector) {
         out << "\n  Result type : Number list (" << lastVectorLen << " entries)\n";
-        writeVectorBlocks(out, lastVector, lastVectorLen, "Entry");
+        writeVectorList(out, lastVector, lastVectorLen, "Entry");
     } else if (lastResultRows == 1 && lastResultCols == 1) {
         out << "\n  Result type : Single value\n";
-        out << "\n  +------------------------------------------+\n";
-        out << "  |  Result\n";
-        out << "  |  Value : " << lastResult[0][0] << "\n";
-        out << "  +------------------------------------------+\n\n";
+        out << "  Value : " << lastResult[0][0] << "\n\n";
     } else {
         out << "\n  Result type : Matrix (" << lastResultRows << " x " << lastResultCols << ")\n";
-        writeMatrixBlocks(out, lastResult, lastResultRows, lastResultCols, 8);
+        writeMatrixGrid(out, lastResult, lastResultRows, lastResultCols, 8);
     }
 
-    out << "\n  +------------------------------------------+\n";
-    out << "  |  Last determinant\n";
-    out << "  |  Value : " << lastDet << "\n";
-    out << "  +------------------------------------------+\n";
+    out << "  Last determinant : " << lastDet << "\n";
     out << "\n==============================================\n";
     out.close();
     cout << "\n  Saved last result to result.txt\n";
@@ -1208,16 +1193,10 @@ void opHistory() {
             printVector(lastVector, lastVectorLen);
         } else if (lastResultRows == 1 && lastResultCols == 1) {
             cout << "  Last result (single value):\n";
-            setColor(C_TITLE);
-            cout << "\n  +------------------------------------------+\n";
-            setColor(C_HIGH);
-            cout << "  |  Result\n";
             setColor(C_OK);
             cout << fixed << setprecision(6);
-            cout << "  |  Value : " << lastResult[0][0] << "\n";
+            cout << "  Value : " << lastResult[0][0] << "\n\n";
             cout << defaultfloat;
-            setColor(C_TITLE);
-            cout << "  +------------------------------------------+\n\n";
             setColor(C_RESET);
         } else {
             cout << "  Last result (matrix " << lastResultRows << " x " << lastResultCols << "):\n";
