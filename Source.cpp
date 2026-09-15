@@ -297,12 +297,12 @@ void writeMatrixGrid(ostream& out, const double M[N][N], int rows, int cols, int
     cellW += 4;
 
     out << fixed << setprecision(prec);
-    out << "\n" << string(MATRIX_LABEL_W, ' ');
+    out << "\n" << string(MATRIX_LABEL_W + 6, ' ');
     for (int j = 0; j < cols; j++)
         out << setw(cellW) << ("Column " + to_string(j + 1));
     out << "\n";
     for (int i = 0; i < rows; i++) {
-        out << "  Row " << setw(2) << (i + 1) << " |";
+        out << "  Row " << setw(2) << (i + 1) << " |" << string(6, ' ');
         for (int j = 0; j < cols; j++)
             out << setw(cellW) << M[i][j];
         out << "  |\n";
