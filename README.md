@@ -246,9 +246,9 @@ The gallery has search, filters, zoom, Previous/Next, arrow-key navigation and s
 17. [Rank of dependent rows](#17_rank_v2)
 18. [3x3 adjugate](#18_adjugate_v2)
 19. [Singular 4x4 adjugate](#19_singular_adjugate_v2)
-20. [Small-scale inverse](#20_small_scale_v2)
+20. [Small-scale inverse](#20_small_scale_v3)
 21. [Zero first pivot](#21_pivot_swap_v2)
-22. [Saved result provenance](#22_saved_history_v2)
+22. [Saved result provenance](#22_saved_history_v3)
 23. [Finite-value validation](#23_validation_v2)
 24. [Native regression report](#24_regression_v2)
 
@@ -446,11 +446,11 @@ The larger singular case has a valid adjugate with bottom-right value 6.
 
 [Native transcript](examples/transcripts/singular_adjugate.txt)
 
-<a id="20_small_scale_v2"></a>
+<a id="20_small_scale_v3"></a>
 
 ### Small-scale inverse
 
-<p align="left"><a href="assets/figures/full/20_small_scale_v2.png"><img src="assets/figures/preview/20_small_scale_v2.png" width="960" height="600" alt="Small-scale inverse"></a></p>
+<p align="left"><a href="assets/figures/full/20_small_scale_v3.png"><img src="assets/figures/preview/20_small_scale_v3.png" width="960" height="600" alt="Small-scale inverse"></a></p>
 
 Row equilibration preserves the inverse of a tiny, well-scaled diagonal matrix.
 
@@ -466,11 +466,11 @@ Partial pivoting swaps rows and preserves the determinant sign.
 
 [Native transcript](examples/transcripts/pivot_swap.txt)
 
-<a id="22_saved_history_v2"></a>
+<a id="22_saved_history_v3"></a>
 
 ### Saved result provenance
 
-<p align="left"><a href="assets/figures/full/22_saved_history_v2.png"><img src="assets/figures/preview/22_saved_history_v2.png" width="960" height="600" alt="Saved result provenance"></a></p>
+<p align="left"><a href="assets/figures/full/22_saved_history_v3.png"><img src="assets/figures/preview/22_saved_history_v3.png" width="960" height="600" alt="Saved result provenance"></a></p>
 
 A saved report keeps the calculation name even after the About screen is opened.
 

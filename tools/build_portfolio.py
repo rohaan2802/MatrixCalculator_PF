@@ -35,6 +35,30 @@ def focused_output(record):
         function = "opTrace" if record["id"] == "trace" else "opRank"
         snippet = read("src/matrix_calculator.cpp").split("void " + function + "(")[1].split("\n}")[0]
         output = "INPUT A\n" + matrix + "\n\nNATIVE STDOUT\n" + output + "\n\nSOURCE EXCERPT\nvoid " + function + "(" + snippet + "\n}"
+    if record["id"] in ("small_scale", "saved_history"):
+        number_pattern = r"[-+]?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?"
+        rows = []
+        for line in output.splitlines():
+            if "Row" not in line or "|" not in line:
+                continue
+            inner = line.split("|", 1)[1].rsplit("|", 1)[0]
+            values = re.findall(number_pattern, inner)
+            if values:
+                rows.append(values)
+
+        def aligned_table(table_rows):
+            width = max(14, max(len(value) for row in table_rows for value in row) + 4)
+            row_prefix = "  Row  1 |"
+            header = " " * len(row_prefix) + "".join(("Column " + str(index + 1)).rjust(width) for index in range(len(table_rows[0])))
+            body = ["  Row " + f"{index:2d}" + " |" + "".join(value.rjust(width) for value in row) + "  |" for index, row in enumerate(table_rows, 1)]
+            return [header, *body]
+
+        if record["id"] == "small_scale" and len(rows) >= 4:
+            first, inverse = rows[:2], rows[2:4]
+            output = "--- Matrix A ---\n\n  Matrix (2 x 2):\n" + "\n".join(aligned_table(first))
+            output += "\n\n  Determinant = 2.00000000e-24\n\n  Inverse of A:\n\n  Matrix (2 x 2):\n" + "\n".join(aligned_table(inverse))
+        elif record["id"] == "saved_history" and len(rows) >= 2:
+            output = "==============================================\n  Matrix Calculator PF - Last Result\n==============================================\n\n  Result operation : Transpose\n\n  Result type : Matrix (2 x 2)\n\n" + "\n".join(aligned_table(rows[:2])) + "\n\n  Most recent determinant : 0\n\n=============================================="
     if record["id"] == "regression":
         lines = output.splitlines()
         output = "\n".join(lines[:12] + ["... full report linked below ..."] + lines[-9:])
@@ -44,7 +68,7 @@ report = json.loads(read("docs/reports/native_results.json"))
 sections = json.loads(read("docs/project_content.json"))
 figures = []
 for index, record in enumerate(report["records"], 1):
-    version = 2
+    version = 3 if record["id"] in ("small_scale", "saved_history") else 2
     slug = f"{index:02d}_{record['id']}_v{version}"
     figure = {
         "id": slug, "title": record["title"], "caption": record["caption"],
@@ -59,9 +83,6 @@ for index, record in enumerate(report["records"], 1):
     draw.rounded_rectangle((22,128,1418,780), radius=14, fill="#102b34", outline="#70aa9b", width=2)
     lines = []
     for line in focused_output(record).splitlines():
-        if "|" in line:
-            leading = line[:len(line) - len(line.lstrip())]
-            line = leading + re.sub(r" {2,}", "    ", line[len(leading):])
         lines.extend(textwrap.wrap(line,105,replace_whitespace=False,drop_whitespace=False) or [""])
     size = min(34,max(21,600 // max(1,len(lines))))
     while size > 21 and any(draw.textbbox((0,0), line, font=font(size))[2] > 1328 for line in lines):

@@ -171,12 +171,12 @@
     "transcript": "examples/transcripts/singular_adjugate.txt"
   },
   {
-    "id": "20_small_scale_v2",
+    "id": "20_small_scale_v3",
     "title": "Small-scale inverse",
     "caption": "Row equilibration preserves the inverse of a tiny, well-scaled diagonal matrix.",
     "category": "Edge cases",
-    "full": "assets/figures/full/20_small_scale_v2.png",
-    "preview": "assets/figures/preview/20_small_scale_v2.png",
+    "full": "assets/figures/full/20_small_scale_v3.png",
+    "preview": "assets/figures/preview/20_small_scale_v3.png",
     "transcript": "examples/transcripts/small_scale.txt"
   },
   {
@@ -189,12 +189,12 @@
     "transcript": "examples/transcripts/pivot_swap.txt"
   },
   {
-    "id": "22_saved_history_v2",
+    "id": "22_saved_history_v3",
     "title": "Saved result provenance",
     "caption": "A saved report keeps the calculation name even after the About screen is opened.",
     "category": "Workflow",
-    "full": "assets/figures/full/22_saved_history_v2.png",
-    "preview": "assets/figures/preview/22_saved_history_v2.png",
+    "full": "assets/figures/full/22_saved_history_v3.png",
+    "preview": "assets/figures/preview/22_saved_history_v3.png",
     "transcript": "examples/transcripts/saved_history.txt"
   },
   {
