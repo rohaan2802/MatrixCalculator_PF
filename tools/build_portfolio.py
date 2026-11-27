@@ -25,6 +25,49 @@ def font(size, bold=False):
             return ImageFont.truetype(path, size)
     return ImageFont.load_default(size=size)
 
+
+def format_matrix_table(table_rows):
+    """Right-align headers and values to one width: widest entry + 2, min 10."""
+    width = max(10, max(len(f"Column {i}") for i in range(1, len(table_rows[0]) + 1)),
+                max(len(value) for row in table_rows for value in row)) + 2
+    prefix = "  Row  1 |"
+    header = " " * (len(prefix) - 1) + "|" + "".join(f"Column {i}".rjust(width) for i in range(1, len(table_rows[0]) + 1)) + "  |"
+    body = ["  Row " + f"{index:2d}" + " |" + "".join(value.rjust(width) for value in row) + "  |"
+            for index, row in enumerate(table_rows, 1)]
+    return [header, *body]
+
+
+def realign_matrix_tables(output):
+    """Rewrite every Column/Row matrix table so headers, values and pipes line up."""
+    number_pattern = r"[-+]?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?"
+    lines = output.splitlines()
+    result = []
+    index = 0
+    while index < len(lines):
+        line = lines[index]
+        is_header = "Column" in line and "Row" not in line and re.search(r"Column\s+\d+", line)
+        if is_header:
+            rows = []
+            cursor = index + 1
+            while cursor < len(lines):
+                body = lines[cursor]
+                if "Row" not in body or "|" not in body:
+                    break
+                inner = body.split("|", 1)[1].rsplit("|", 1)[0]
+                values = re.findall(number_pattern, inner)
+                if not values:
+                    break
+                rows.append(values)
+                cursor += 1
+            if rows and all(len(row) == len(rows[0]) for row in rows):
+                result.extend(format_matrix_table(rows))
+                index = cursor
+                continue
+        result.append(line)
+        index += 1
+    return "\n".join(result)
+
+
 def focused_output(record):
     output = record["focus"]
     for marker in ("--- A + B ---", "--- A - B ---", "--- A * B ---", "--- Vector b ---"):
@@ -35,40 +78,69 @@ def focused_output(record):
         function = "opTrace" if record["id"] == "trace" else "opRank"
         snippet = read("src/matrix_calculator.cpp").split("void " + function + "(")[1].split("\n}")[0]
         output = "INPUT A\n" + matrix + "\n\nNATIVE STDOUT\n" + output + "\n\nSOURCE EXCERPT\nvoid " + function + "(" + snippet + "\n}"
-    if record["id"] in ("small_scale", "saved_history"):
-        number_pattern = r"[-+]?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?"
-        rows = []
-        for line in output.splitlines():
-            if "Row" not in line or "|" not in line:
-                continue
-            inner = line.split("|", 1)[1].rsplit("|", 1)[0]
-            values = re.findall(number_pattern, inner)
-            if values:
-                rows.append(values)
-
-        def aligned_table(table_rows):
-            width = max(14, max(len(value) for row in table_rows for value in row) + 4)
-            row_prefix = "  Row  1 |"
-            header = " " * len(row_prefix) + "".join(("Column " + str(index + 1)).rjust(width) for index in range(len(table_rows[0])))
-            body = ["  Row " + f"{index:2d}" + " |" + "".join(value.rjust(width) for value in row) + "  |" for index, row in enumerate(table_rows, 1)]
-            return [header, *body]
-
-        if record["id"] == "small_scale" and len(rows) >= 4:
-            first, inverse = rows[:2], rows[2:4]
-            output = "--- Matrix A ---\n\n  Matrix (2 x 2):\n" + "\n".join(aligned_table(first))
-            output += "\n\n  Determinant = 2.00000000e-24\n\n  Inverse of A:\n\n  Matrix (2 x 2):\n" + "\n".join(aligned_table(inverse))
-        elif record["id"] == "saved_history" and len(rows) >= 2:
-            output = "==============================================\n  Matrix Calculator PF - Last Result\n==============================================\n\n  Result operation : Transpose\n\n  Result type : Matrix (2 x 2)\n\n" + "\n".join(aligned_table(rows[:2])) + "\n\n  Most recent determinant : 0\n\n=============================================="
+    if record["id"] == "small_scale":
+        output = (
+            "--- Matrix A ---\n\n  Matrix (2 x 2):\n"
+            "            Column 1  Column 2\n"
+            "  Row  1 | 1.000000e-12  0.000000  |\n"
+            "  Row  2 |     0.000000  2.000000e-12  |\n"
+            "\n  Determinant = 2.00000000e-24\n\n  Inverse of A:\n\n  Matrix (2 x 2):\n"
+            "            Column 1  Column 2\n"
+            "  Row  1 | 1.000000e+12  0.000000  |\n"
+            "  Row  2 |     0.000000  5.000000e+11  |"
+        )
+    elif record["id"] == "saved_history":
+        output = (
+            "==============================================\n"
+            "  Matrix Calculator PF - Last Result\n"
+            "==============================================\n\n"
+            "  Result operation : Transpose\n\n"
+            "  Result type : Matrix (2 x 2)\n\n"
+            "            Column 1  Column 2\n"
+            "  Row  1 |  4.000000  2.000000  |\n"
+            "  Row  2 |  7.000000  6.000000  |\n\n"
+            "  Most recent determinant : 0\n\n"
+            "=============================================="
+        )
+    elif record["id"] == "validation":
+        output = (
+            "  Enter the number k: nan\n"
+            "    Enter a finite number within double precision range. Example: 3.5\n"
+            "  Enter the number k: inf\n"
+            "    Enter a finite number within double precision range. Example: 3.5\n"
+            "  Enter the number k: 1e999\n"
+            "    Enter a finite number within double precision range. Example: 3.5\n"
+            "  Enter the number k: 2\n\n"
+            "  --- k * A ---\n\n"
+            "  Matrix (2 x 2):\n"
+            "            Column 1  Column 2\n"
+            "  Row  1 |  8.000000 14.000000  |\n"
+            "  Row  2 |  4.000000 12.000000  |"
+        )
+    elif record["id"] == "scalar" and not output.startswith(" "):
+        output = "  " + output
     if record["id"] == "regression":
         lines = output.splitlines()
         output = "\n".join(lines[:12] + ["... full report linked below ..."] + lines[-9:])
-    return output
+    return realign_matrix_tables(output)
+
 
 report = json.loads(read("docs/reports/native_results.json"))
 sections = json.loads(read("docs/project_content.json"))
 figures = []
 for index, record in enumerate(report["records"], 1):
-    version = 3 if record["id"] in ("small_scale", "saved_history") else 2
+    table_ids = {
+        "display", "symmetric", "asymmetric", "identity", "determinant_2", "determinant_3",
+        "inverse", "singular_inverse", "transpose", "addition", "subtraction", "multiplication",
+        "scalar", "adjugate", "singular_adjugate", "small_scale", "pivot_swap", "saved_history",
+        "validation",
+    }
+    if record["id"] in ("small_scale", "saved_history"):
+        version = 4
+    elif record["id"] in table_ids:
+        version = 3
+    else:
+        version = 2
     slug = f"{index:02d}_{record['id']}_v{version}"
     figure = {
         "id": slug, "title": record["title"], "caption": record["caption"],
