@@ -342,7 +342,7 @@
       "28.000000"
     ],
     "category": "Operations",
-    "caption": "The triple-loop product produces [[25,36],[20,28]] for the two recorded inputs."
+    "caption": "A = [[4,7],[2,6]] times B = [[1,2],[3,4]] produces [[25,36],[20,28]] via the native triple-loop product."
   },
   {
     "id": "scalar",
@@ -487,27 +487,48 @@
     "caption": "The larger singular case has a valid adjugate with bottom-right value 6."
   },
   {
-    "id": "small_scale",
-    "title": "Small-scale inverse",
+    "id": "inverse_verify",
+    "title": "3\u00d73 inverse verification",
     "operation": 6,
     "matrix": [
       [
-        1e-12,
+        2,
+        1,
         0
       ],
       [
         0,
-        2e-12
+        2,
+        1
+      ],
+      [
+        0,
+        0,
+        2
       ]
     ],
-    "extra": [],
+    "extra": [
+      "Y",
+      "12",
+      "1",
+      "0.5",
+      "-0.25",
+      "0.125",
+      "0",
+      "0.5",
+      "-0.25",
+      "0",
+      "0",
+      "0.5"
+    ],
     "contains": [
       "Inverse of A:",
-      "1.000000e+12",
-      "5.000000e+11"
+      "0.125000",
+      "--- A * B ---",
+      "Determinant = 8.00000000"
     ],
-    "category": "Edge cases",
-    "caption": "Row equilibration preserves the inverse of a tiny, well-scaled diagonal matrix."
+    "category": "Operations",
+    "caption": "The calculator inverts a 3\u00d73 upper-triangular matrix (determinant 8), then multiplies A by that inverse entered as B. The product is the identity, confirming A \u00d7 A\u207b\u00b9 = I."
   },
   {
     "id": "pivot_swap",

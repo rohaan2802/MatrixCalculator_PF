@@ -227,110 +227,110 @@ The gallery has search, filters, zoom, Previous/Next, arrow-key navigation and s
 
 ## Figure Index
 
-1. [Labeled matrix display](#01_display_v3)
-2. [Symmetric matrix check](#02_symmetric_v3)
-3. [Asymmetric matrix check](#03_asymmetric_v3)
-4. [Identity matrix check](#04_identity_v3)
-5. [2x2 determinant](#05_determinant_2_v3)
-6. [3x3 determinant](#06_determinant_3_v3)
-7. [2x2 inverse](#07_inverse_v3)
-8. [Singular inverse rejection](#08_singular_inverse_v3)
+1. [Labeled matrix display](#01_display_v4)
+2. [Symmetric matrix check](#02_symmetric_v4)
+3. [Asymmetric matrix check](#03_asymmetric_v4)
+4. [Identity matrix check](#04_identity_v4)
+5. [2x2 determinant](#05_determinant_2_v4)
+6. [3x3 determinant](#06_determinant_3_v4)
+7. [2x2 inverse](#07_inverse_v4)
+8. [Singular inverse rejection](#08_singular_inverse_v4)
 9. [Unique linear-system solution](#09_solve_v2)
 10. [Nonunique system rejection](#10_singular_solve_v2)
-11. [Matrix transpose](#11_transpose_v3)
-12. [Matrix addition](#12_addition_v3)
-13. [Matrix subtraction](#13_subtraction_v3)
-14. [Matrix multiplication](#14_multiplication_v3)
-15. [Scalar multiplication](#15_scalar_v3)
+11. [Matrix transpose](#11_transpose_v4)
+12. [Matrix addition](#12_addition_v4)
+13. [Matrix subtraction](#13_subtraction_v4)
+14. [Matrix multiplication](#14_multiplication_v4)
+15. [Scalar multiplication](#15_scalar_v4)
 16. [Matrix trace](#16_trace_v2)
 17. [Rank of dependent rows](#17_rank_v2)
-18. [3x3 adjugate](#18_adjugate_v3)
-19. [Singular 4x4 adjugate](#19_singular_adjugate_v3)
-20. [Small-scale inverse](#20_small_scale_v4)
-21. [Zero first pivot](#21_pivot_swap_v3)
-22. [Saved result provenance](#22_saved_history_v4)
-23. [Finite-value validation](#23_validation_v3)
+18. [3x3 adjugate](#18_adjugate_v4)
+19. [Singular 4x4 adjugate](#19_singular_adjugate_v4)
+20. [3×3 inverse verification](#20_inverse_verify_v1)
+21. [Zero first pivot](#21_pivot_swap_v4)
+22. [Saved result provenance](#22_saved_history_v5)
+23. [Finite-value validation](#23_validation_v4)
 24. [Native regression report](#24_regression_v2)
 
 ## Screenshots
 
 Each frame uses actual native output or its regression report. Full images are 1440 × 900 and previews are 960 × 600.
 
-<a id="01_display_v3"></a>
+<a id="01_display_v4"></a>
 
 ### Labeled matrix display
 
-<p align="left"><a href="assets/figures/full/01_display_v3.png"><img src="assets/figures/preview/01_display_v3.png" width="960" height="600" alt="Labeled matrix display"></a></p>
+<p align="left"><a href="assets/figures/full/01_display_v4.png"><img src="assets/figures/preview/01_display_v4.png" width="960" height="600" alt="Labeled matrix display"></a></p>
 
 The native calculator displays a 2x2 working matrix with labeled rows and columns.
 
 [Native transcript](examples/transcripts/display.txt)
 
-<a id="02_symmetric_v3"></a>
+<a id="02_symmetric_v4"></a>
 
 ### Symmetric matrix check
 
-<p align="left"><a href="assets/figures/full/02_symmetric_v3.png"><img src="assets/figures/preview/02_symmetric_v3.png" width="960" height="600" alt="Symmetric matrix check"></a></p>
+<p align="left"><a href="assets/figures/full/02_symmetric_v4.png"><img src="assets/figures/preview/02_symmetric_v4.png" width="960" height="600" alt="Symmetric matrix check"></a></p>
 
 The two off-diagonal entries match, so the pairwise symmetry check succeeds.
 
 [Native transcript](examples/transcripts/symmetric.txt)
 
-<a id="03_asymmetric_v3"></a>
+<a id="03_asymmetric_v4"></a>
 
 ### Asymmetric matrix check
 
-<p align="left"><a href="assets/figures/full/03_asymmetric_v3.png"><img src="assets/figures/preview/03_asymmetric_v3.png" width="960" height="600" alt="Asymmetric matrix check"></a></p>
+<p align="left"><a href="assets/figures/full/03_asymmetric_v4.png"><img src="assets/figures/preview/03_asymmetric_v4.png" width="960" height="600" alt="Asymmetric matrix check"></a></p>
 
 The original input is compared with its transpose and correctly classified as asymmetric.
 
 [Native transcript](examples/transcripts/asymmetric.txt)
 
-<a id="04_identity_v3"></a>
+<a id="04_identity_v4"></a>
 
 ### Identity matrix check
 
-<p align="left"><a href="assets/figures/full/04_identity_v3.png"><img src="assets/figures/preview/04_identity_v3.png" width="960" height="600" alt="Identity matrix check"></a></p>
+<p align="left"><a href="assets/figures/full/04_identity_v4.png"><img src="assets/figures/preview/04_identity_v4.png" width="960" height="600" alt="Identity matrix check"></a></p>
 
 A 3x3 identity input passes the diagonal and off-diagonal checks.
 
 [Native transcript](examples/transcripts/identity.txt)
 
-<a id="05_determinant_2_v3"></a>
+<a id="05_determinant_2_v4"></a>
 
 ### 2x2 determinant
 
-<p align="left"><a href="assets/figures/full/05_determinant_2_v3.png"><img src="assets/figures/preview/05_determinant_2_v3.png" width="960" height="600" alt="2x2 determinant"></a></p>
+<p align="left"><a href="assets/figures/full/05_determinant_2_v4.png"><img src="assets/figures/preview/05_determinant_2_v4.png" width="960" height="600" alt="2x2 determinant"></a></p>
 
 Gaussian elimination returns determinant 10 for the bundled 2x2 example.
 
 [Native transcript](examples/transcripts/determinant_2.txt)
 
-<a id="06_determinant_3_v3"></a>
+<a id="06_determinant_3_v4"></a>
 
 ### 3x3 determinant
 
-<p align="left"><a href="assets/figures/full/06_determinant_3_v3.png"><img src="assets/figures/preview/06_determinant_3_v3.png" width="960" height="600" alt="3x3 determinant"></a></p>
+<p align="left"><a href="assets/figures/full/06_determinant_3_v4.png"><img src="assets/figures/preview/06_determinant_3_v4.png" width="960" height="600" alt="3x3 determinant"></a></p>
 
 The classic 3x3 example has determinant 1, providing a known-value calculation.
 
 [Native transcript](examples/transcripts/determinant_3.txt)
 
-<a id="07_inverse_v3"></a>
+<a id="07_inverse_v4"></a>
 
 ### 2x2 inverse
 
-<p align="left"><a href="assets/figures/full/07_inverse_v3.png"><img src="assets/figures/preview/07_inverse_v3.png" width="960" height="600" alt="2x2 inverse"></a></p>
+<p align="left"><a href="assets/figures/full/07_inverse_v4.png"><img src="assets/figures/preview/07_inverse_v4.png" width="960" height="600" alt="2x2 inverse"></a></p>
 
 The native inverse has entries 0.6, -0.7, -0.2 and 0.4.
 
 [Native transcript](examples/transcripts/inverse.txt)
 
-<a id="08_singular_inverse_v3"></a>
+<a id="08_singular_inverse_v4"></a>
 
 ### Singular inverse rejection
 
-<p align="left"><a href="assets/figures/full/08_singular_inverse_v3.png"><img src="assets/figures/preview/08_singular_inverse_v3.png" width="960" height="600" alt="Singular inverse rejection"></a></p>
+<p align="left"><a href="assets/figures/full/08_singular_inverse_v4.png"><img src="assets/figures/preview/08_singular_inverse_v4.png" width="960" height="600" alt="Singular inverse rejection"></a></p>
 
 Dependent rows are detected, and the calculator reports that an inverse does not exist.
 
@@ -356,51 +356,51 @@ A dependent system is rejected as having no unique solution.
 
 [Native transcript](examples/transcripts/singular_solve.txt)
 
-<a id="11_transpose_v3"></a>
+<a id="11_transpose_v4"></a>
 
 ### Matrix transpose
 
-<p align="left"><a href="assets/figures/full/11_transpose_v3.png"><img src="assets/figures/preview/11_transpose_v3.png" width="960" height="600" alt="Matrix transpose"></a></p>
+<p align="left"><a href="assets/figures/full/11_transpose_v4.png"><img src="assets/figures/preview/11_transpose_v4.png" width="960" height="600" alt="Matrix transpose"></a></p>
 
 Rows become columns while the stored working matrix stays available for later operations.
 
 [Native transcript](examples/transcripts/transpose.txt)
 
-<a id="12_addition_v3"></a>
+<a id="12_addition_v4"></a>
 
 ### Matrix addition
 
-<p align="left"><a href="assets/figures/full/12_addition_v3.png"><img src="assets/figures/preview/12_addition_v3.png" width="960" height="600" alt="Matrix addition"></a></p>
+<p align="left"><a href="assets/figures/full/12_addition_v4.png"><img src="assets/figures/preview/12_addition_v4.png" width="960" height="600" alt="Matrix addition"></a></p>
 
 Adding [[1,2],[3,4]] produces [[5,9],[5,10]].
 
 [Native transcript](examples/transcripts/addition.txt)
 
-<a id="13_subtraction_v3"></a>
+<a id="13_subtraction_v4"></a>
 
 ### Matrix subtraction
 
-<p align="left"><a href="assets/figures/full/13_subtraction_v3.png"><img src="assets/figures/preview/13_subtraction_v3.png" width="960" height="600" alt="Matrix subtraction"></a></p>
+<p align="left"><a href="assets/figures/full/13_subtraction_v4.png"><img src="assets/figures/preview/13_subtraction_v4.png" width="960" height="600" alt="Matrix subtraction"></a></p>
 
 Subtracting [[1,2],[3,4]] produces [[3,5],[-1,2]].
 
 [Native transcript](examples/transcripts/subtraction.txt)
 
-<a id="14_multiplication_v3"></a>
+<a id="14_multiplication_v4"></a>
 
 ### Matrix multiplication
 
-<p align="left"><a href="assets/figures/full/14_multiplication_v3.png"><img src="assets/figures/preview/14_multiplication_v3.png" width="960" height="600" alt="Matrix multiplication"></a></p>
+<p align="left"><a href="assets/figures/full/14_multiplication_v4.png"><img src="assets/figures/preview/14_multiplication_v4.png" width="960" height="600" alt="Matrix multiplication"></a></p>
 
-The triple-loop product produces [[25,36],[20,28]] for the two recorded inputs.
+A = [[4,7],[2,6]] times B = [[1,2],[3,4]] produces [[25,36],[20,28]] via the native triple-loop product.
 
 [Native transcript](examples/transcripts/multiplication.txt)
 
-<a id="15_scalar_v3"></a>
+<a id="15_scalar_v4"></a>
 
 ### Scalar multiplication
 
-<p align="left"><a href="assets/figures/full/15_scalar_v3.png"><img src="assets/figures/preview/15_scalar_v3.png" width="960" height="600" alt="Scalar multiplication"></a></p>
+<p align="left"><a href="assets/figures/full/15_scalar_v4.png"><img src="assets/figures/preview/15_scalar_v4.png" width="960" height="600" alt="Scalar multiplication"></a></p>
 
 A negative scalar multiplies every cell without replacing the working matrix.
 
@@ -426,61 +426,61 @@ Row reduction finds one independent row in this 3x3 matrix.
 
 [Native transcript](examples/transcripts/rank.txt)
 
-<a id="18_adjugate_v3"></a>
+<a id="18_adjugate_v4"></a>
 
 ### 3x3 adjugate
 
-<p align="left"><a href="assets/figures/full/18_adjugate_v3.png"><img src="assets/figures/preview/18_adjugate_v3.png" width="960" height="600" alt="3x3 adjugate"></a></p>
+<p align="left"><a href="assets/figures/full/18_adjugate_v4.png"><img src="assets/figures/preview/18_adjugate_v4.png" width="960" height="600" alt="3x3 adjugate"></a></p>
 
 The direct cofactor implementation transposes the cofactor matrix to form the adjugate.
 
 [Native transcript](examples/transcripts/adjugate.txt)
 
-<a id="19_singular_adjugate_v3"></a>
+<a id="19_singular_adjugate_v4"></a>
 
 ### Singular 4x4 adjugate
 
-<p align="left"><a href="assets/figures/full/19_singular_adjugate_v3.png"><img src="assets/figures/preview/19_singular_adjugate_v3.png" width="960" height="600" alt="Singular 4x4 adjugate"></a></p>
+<p align="left"><a href="assets/figures/full/19_singular_adjugate_v4.png"><img src="assets/figures/preview/19_singular_adjugate_v4.png" width="960" height="600" alt="Singular 4x4 adjugate"></a></p>
 
 The larger singular case has a valid adjugate with bottom-right value 6.
 
 [Native transcript](examples/transcripts/singular_adjugate.txt)
 
-<a id="20_small_scale_v4"></a>
+<a id="20_inverse_verify_v1"></a>
 
-### Small-scale inverse
+### 3×3 inverse verification
 
-<p align="left"><a href="assets/figures/full/20_small_scale_v4.png"><img src="assets/figures/preview/20_small_scale_v4.png" width="960" height="600" alt="Small-scale inverse"></a></p>
+<p align="left"><a href="assets/figures/full/20_inverse_verify_v1.png"><img src="assets/figures/preview/20_inverse_verify_v1.png" width="960" height="600" alt="3×3 inverse verification"></a></p>
 
-Row equilibration preserves the inverse of a tiny, well-scaled diagonal matrix.
+The calculator inverts a 3×3 upper-triangular matrix (determinant 8), then multiplies A by that inverse entered as B. The product is the identity, confirming A × A⁻¹ = I.
 
-[Native transcript](examples/transcripts/small_scale.txt)
+[Native transcript](examples/transcripts/inverse_verify.txt)
 
-<a id="21_pivot_swap_v3"></a>
+<a id="21_pivot_swap_v4"></a>
 
 ### Zero first pivot
 
-<p align="left"><a href="assets/figures/full/21_pivot_swap_v3.png"><img src="assets/figures/preview/21_pivot_swap_v3.png" width="960" height="600" alt="Zero first pivot"></a></p>
+<p align="left"><a href="assets/figures/full/21_pivot_swap_v4.png"><img src="assets/figures/preview/21_pivot_swap_v4.png" width="960" height="600" alt="Zero first pivot"></a></p>
 
 Partial pivoting swaps rows and preserves the determinant sign.
 
 [Native transcript](examples/transcripts/pivot_swap.txt)
 
-<a id="22_saved_history_v4"></a>
+<a id="22_saved_history_v5"></a>
 
 ### Saved result provenance
 
-<p align="left"><a href="assets/figures/full/22_saved_history_v4.png"><img src="assets/figures/preview/22_saved_history_v4.png" width="960" height="600" alt="Saved result provenance"></a></p>
+<p align="left"><a href="assets/figures/full/22_saved_history_v5.png"><img src="assets/figures/preview/22_saved_history_v5.png" width="960" height="600" alt="Saved result provenance"></a></p>
 
 A saved report keeps the calculation name even after the About screen is opened.
 
 [Native transcript](examples/transcripts/saved_history.txt)
 
-<a id="23_validation_v3"></a>
+<a id="23_validation_v4"></a>
 
 ### Finite-value validation
 
-<p align="left"><a href="assets/figures/full/23_validation_v3.png"><img src="assets/figures/preview/23_validation_v3.png" width="960" height="600" alt="Finite-value validation"></a></p>
+<p align="left"><a href="assets/figures/full/23_validation_v4.png"><img src="assets/figures/preview/23_validation_v4.png" width="960" height="600" alt="Finite-value validation"></a></p>
 
 NaN, infinity and overflowing numeric tokens are rejected before a valid scalar is accepted.
 
