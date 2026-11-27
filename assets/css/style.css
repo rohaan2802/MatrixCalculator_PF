@@ -101,7 +101,8 @@ dialog::backdrop { background: #071c24da; }
 .viewer-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
 .viewer-controls a { margin-right: auto; }
 #close { width: 43px; height: 43px; padding: 10px; }
-.viewer-image { max-height: 66dvh; overflow: auto; touch-action: pan-y; }
+.viewer-image { max-height: 66dvh; overflow-x: auto; overflow-y: auto; touch-action: pan-x pan-y; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; cursor: grab; }
+.viewer-image:active { cursor: grabbing; }
 .viewer-image img { width: 100%; display: block; }
 .viewer-image.zoomed img { width: 1440px; max-width: none; }
 dialog h2 { font-size: 25px; margin: 18px 0 8px; }
