@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MatrixCalculator_PF | Mohammad Rohaan</title>
+  <meta name="description" content="C++17 matrix calculator with numerical checks, a browser playground and 24 figures from actual executable output.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('matrix-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light')}catch{}</script>
+  <script src="assets/js/matrix.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body id="top">
+  <a class="skip" href="#main">Skip to content</a>
+  <header>
+    <a class="brand" href="#top"><img src="assets/favicon.svg" width="32" height="32" alt="">MatrixCalculator_PF</a>
+    <nav id="navigation" aria-label="Main navigation">@@NAV@@</nav>
+    <button id="theme" aria-label="Switch theme"></button>
+    <button id="menu" aria-label="Open menu" aria-expanded="false" aria-controls="navigation"></button>
+  </header>
+  <main id="main">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">Programming Fundamentals / C++17</p>
+        <h1>Matrix Calculator</h1>
+        <p>A 19-option native console project with row-equilibrated elimination, recorded execution results and an interactive browser calculator.</p>
+        <div class="badges">@@BADGES@@</div>
+        <div class="actions"><a class="button" href="#calculator">Try the calculator</a><a href="src/matrix_calculator.cpp" download>Download C++ source</a></div>
+      </div>
+      <a href="#gallery"><img src="@@HERO_IMAGE@@" width="960" height="600" alt="Actual native inverse output"></a>
+    </div>
+    <section id="links">
+      <h2>Live Links</h2>
+      <div class="scroll"><table><thead><tr><th>What</th><th>Link</th></tr></thead><tbody>
+        <tr><td>Repository</td><td><a href="@@REPO@@">@@REPO@@</a></td></tr>
+        <tr><td>GitHub Pages</td><td><a href="@@PAGES@@">@@PAGES@@</a></td></tr>
+        <tr><td>CMake tutorial</td><td><a href="@@RESOURCE@@">@@RESOURCE@@</a></td></tr>
+      </tbody></table></div>
+    </section>
+    <section id="contents"><h2>Contents</h2><ol class="contents">@@CONTENTS@@<li><a href="#calculator">Browser calculator</a></li><li><a href="#gallery">24 native figures</a></li><li><a href="#downloads">Source and downloads</a></li></ol></section>
+    @@OVERVIEW@@
+    @@ARCHITECTURE@@
+    <section id="calculator">
+      <h2>Browser calculator</h2>
+      <p>Calculate new square-matrix inputs locally. This browser implementation mirrors the native elimination methods.</p>
+      <div class="playground">
+        <form id="calculator-form">
+          <div class="field"><label for="preset">Example matrix</label><select id="preset"><option value="classic">Classic 2×2</option><option value="pivot">Zero first pivot</option><option value="singular">Dependent rows</option><option value="tiny">Small diagonal entries</option><option value="singular4">Singular 4×4</option></select></div>
+          <div class="field"><label for="matrix-a">Matrix A</label><textarea id="matrix-a" rows="5" spellcheck="false">4, 7
+2, 6</textarea><small>One row per line, with comma or space-separated entries. Orders 1–10.</small></div>
+          <div class="field"><label for="operation">Operation</label><select id="operation">@@OPTIONS@@</select></div>
+          <div class="field" id="second-field" hidden><label id="second-label" for="matrix-b">Matrix B</label><textarea id="matrix-b" rows="4" spellcheck="false">1, 2
+3, 4</textarea></div>
+          <div class="field" id="scalar-field" hidden><label for="scalar">Scalar k</label><input id="scalar" value="2" inputmode="decimal"></div>
+          <div class="actions"><button class="button" type="submit">Calculate</button><span class="shortcut">Ctrl + Enter</span></div>
+        </form>
+        <div class="result-panel"><h3>Calculated result</h3><p id="calculation-status" role="status" aria-live="polite">Choose an operation and calculate.</p><div class="scroll" id="calculation-output"></div><button id="export-result" disabled>Download result JSON</button></div>
+      </div>
+    </section>
+    @@INSIDE@@
+    @@METHODS@@
+    @@WORKFLOW@@
+    @@SETUP@@
+    <section id="native-demo"><h2>Inspect a saved native run</h2><p>This record comes from the C++ executable. The complete transcript includes the original prompts and output.</p><label for="native-case">Recorded case</label><select id="native-case">@@CASES@@</select><pre id="native-output"></pre><a id="native-transcript">Open complete native transcript</a></section>
+    @@DEMO@@
+    @@RESULTS@@
+    @@QUALITY@@
+    <section id="gallery">
+      <h2>Native output gallery</h2>
+      <p>The same 24 images, captions and order are used in the README. Each frame links to its original stdout.</p>
+      <div class="filters"><div><label for="search">Search figures</label><input type="search" id="search" placeholder="Search figures by operation or topic"></div><div><label for="category">Category</label><select id="category"><option>All</option>@@CATEGORIES@@</select></div></div>
+      <p id="count" aria-live="polite"></p>
+      <div class="gallery">@@CARDS@@</div>
+      <p id="empty" hidden>No matching figures. Clear the search or choose All.</p>
+    </section>
+    @@STRUCTURE@@
+    <section id="downloads">
+      <h2>Source and downloads</h2>
+      <div class="source-links">
+        <a href="src/matrix_calculator.cpp" download>Maintained C++ source</a>
+        <a href="MatrixCalculator_PF.sln" download>Visual Studio solution</a>
+        <a href="MatrixCalculator_PF.vcxproj" download>Visual Studio project</a>
+        <a href="CMakeLists.txt" download>CMake build</a>
+        <a href="docs/architecture.md">Architecture notes</a>
+        <a href="data/demo_cases.json" download>Recorded input cases</a>
+        <a href="docs/reports/native_results.json" download>Native replay report</a>
+        <a href="examples/saved_result.txt" download>Saved text result</a>
+        <a href="docs/implementation.md">Implementation notes</a>
+        <a href="docs/reports/verification.md">Verification report</a>
+        <a href="docs/archive/README.md">Historical archive</a>
+      </div>
+    </section>
+    @@LIMITS@@
+    @@AUTHOR@@
+  </main>
+  <footer><strong>Mohammad Rohaan</strong><p>BS Computer Science · FAST-NUCES</p><a href="https://github.com/rohaan2802">GitHub profile</a> · <a href="#downloads">Project source</a></footer>
+  <button id="back-top" aria-label="Back to top" hidden></button>
+  <dialog id="viewer" aria-labelledby="viewer-title">
+    <div class="viewer-controls"><button id="previous" aria-label="Previous figure">←</button><button id="zoom" aria-pressed="false">Zoom</button><a id="original">Full image</a><button id="next" aria-label="Next figure">→</button><button id="close" aria-label="Close viewer"></button></div>
+    <div class="viewer-image"><img id="viewer-image" alt=""></div>
+    <h2 id="viewer-title"></h2><p id="viewer-caption"></p><p class="shortcut">← / → Previous or next · Escape Close</p>
+  </dialog>
+  <script id="figure-data" type="application/json">@@FIGURE_JSON@@</script>
+  <script id="native-data" type="application/json">@@NATIVE_JSON@@</script>
+</body>
+</html>

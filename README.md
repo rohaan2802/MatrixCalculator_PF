@@ -1,305 +1,505 @@
+<div align="center">
+
 # MatrixCalculator_PF
 
-Professional **square-matrix console calculator** for Programming Fundamentals — rebuilt from the original course project with every menu feature preserved, numerical bugs fixed, and production-minded extras added.
-
-**Author:** Mohammad Rohaan · **22I-2327**  
-**Capacity:** `const int N = 10` (square matrices up to 10×10)  
-**Source:** [`Source.cpp`](Source.cpp) · solution [`PF_Project_2.sln`](PF_Project_2.sln)  
-**Repository:** [github.com/rohaan2802/MatrixCalculator_PF](https://github.com/rohaan2802/MatrixCalculator_PF)
-
----
-
-## Visual walkthrough
-
-Open the [Screenshot gallery](#screenshot-gallery) below for an end-to-end tour (~30 screenshots): banner and menu, validated size entry, matrix input, course operations 1–7, extras (addition through history), singular solve, 4×4 GE determinant, save/`result.txt`, continue Y vs N, and a complete feature map.
-
-**About colors:** Gallery panels are stylized for README readability. The live Windows build uses the same layout and **real console colors** via `SetConsoleTextAttribute` (green titles, cyan prompts, red errors, bright matrix values). Run `PF_Project_2.exe` in a normal Command Prompt / Windows Terminal to see them.
-
-Detailed I/O in the live app includes: row-by-row entry with per-cell confirmation, matrix preview after input, labeled `r#`/`c#` output grids, and a clear Y / N / 0 continue prompt.
-
-Regenerate images anytime:
-
-```bash
-pip install Pillow
-python docs/generate_screenshots.py
-```
-
----
-
-## Ready to run
+**Square-matrix calculations in C++17, with a browser playground and reproducible numerical evidence.**
 
-1. Open [`PF_Project_2.sln`](PF_Project_2.sln) in Visual Studio 2022.
-2. Set configuration to **Release** and platform to **x64**.
-3. Build the solution (`Ctrl+Shift+B` or **Build → Build Solution**).
-4. Run the executable from the project folder: `x64\Release\PF_Project_2.exe`  
-   (Command Prompt / Windows Terminal — so console colors show correctly.)
+[![C++17](https://img.shields.io/badge/C%2B%2B-17-16635b?logo=cplusplus&logoColor=white)](src/matrix_calculator.cpp)
+[![CMake](https://img.shields.io/badge/Build-CMake-16635b?logo=cmake&logoColor=white)](CMakeLists.txt)
+[![Visual Studio](https://img.shields.io/badge/IDE-Visual_Studio-16635b?logo=visualstudio&logoColor=white)](MatrixCalculator_PF.sln)
+[![Native demo](https://img.shields.io/badge/Native_cases-24-16635b?logo=windows&logoColor=white)](docs/reports/native_results.json)
+[![Browser](https://img.shields.io/badge/Browser-Calculator-16635b?logo=javascript&logoColor=white)](#interactive-browser)
+[![Tests](https://img.shields.io/badge/Checks-Numerical-16635b?logo=githubactions&logoColor=white)](tests/matrix_regression.cpp)
+[![Source](https://img.shields.io/badge/GitHub-Source-16635b?logo=github&logoColor=white)](https://github.com/rohaan2802/MatrixCalculator_PF)
+[![Pages](https://img.shields.io/badge/Pages-Case_study-16635b?logo=githubpages&logoColor=white)](https://rohaan2802.github.io/MatrixCalculator_PF/)
 
-MSBuild one-liner (same config):
+</div>
 
-```bat
-"C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" PF_Project_2.sln /p:Configuration=Release /p:Platform=x64
-```
+## Live Links
 
----
+| What | Link |
+| --- | --- |
+| Repository | [https://github.com/rohaan2802/MatrixCalculator_PF](https://github.com/rohaan2802/MatrixCalculator_PF) |
+| GitHub Pages | [https://rohaan2802.github.io/MatrixCalculator_PF/](https://rohaan2802.github.io/MatrixCalculator_PF/) |
+| CMake tutorial | [https://cmake.org/cmake/help/latest/guide/tutorial/index.html](https://cmake.org/cmake/help/latest/guide/tutorial/index.html) |
 
-## Requirements checklist
+## Contents
 
-| # | Requirement | Status |
-|---|-------------|--------|
-| 1 | Display matrix A (`setw` / `setprecision`) | Done |
-| 2 | Symmetric check (full pairwise for all `n`) | Done |
-| 3 | Identity check (initialized flag; diag 1 / off-diag 0) | Done |
-| 4 | Determinant (GE + partial pivoting; `lastDet`) | Done |
-| 5 | Adjoint / adjugate (cofactors `n≤3`; `Inv·det` when invertible) | Done |
-| 6 | Inverse (GE on `[A \| I]`; refuse singular) | Done |
-| 7 | Solve `Ax = b` (correct **n×1** `b`; GE solve) | Done |
-| 8 | Exit (clean loop; no `goto`) | Done |
-| 9 | Transpose | Done |
-| 10 | Addition `A + B` | Done |
-| 11 | Subtraction `A − B` | Done |
-| 12 | Multiplication `A · B` | Done |
-| 13 | Scalar `k · A` | Done |
-| 14 | Trace | Done |
-| 15 | Rank (row-reduced GE) | Done |
-| 16 | Sample presets | Done |
-| 17 | Banner / about | Done |
-| 18 | Save `result.txt` | Done |
-| 19 | History (last op + last result) | Done |
-| — | GE for all square sizes **n ≤ 10** | Done |
-| — | **`double`** throughout (det / inv / solve) | Done |
-| — | Working matrix **A preserved** (ops use temps) | Done |
-| — | **30** README screenshots in `docs/screenshots/` | Done |
+1. [Live Links](#live-links)
+2. [Overview](#overview)
+3. [What's Inside](#whats-inside)
+4. [Architecture and Design](#architecture-and-design)
+5. [Project Breakdown](#project-breakdown)
+6. [Console Workflow](#console-workflow)
+7. [Setup and Build](#setup-and-build)
+8. [Reproduce the Demo](#reproduce-the-demo)
+9. [Results and Verification](#results-and-verification)
+10. [Engineering Quality Signals](#engineering-quality-signals)
+11. [Folder Structure](#folder-structure)
+12. [Limitations](#limitations)
+13. [Interactive Browser](#interactive-browser)
+14. [Source and Downloads](#source-and-downloads)
+15. [Figure Index](#figure-index)
+16. [Screenshots](#screenshots)
+17. [About the Author](#about-the-author)
 
-**Session control:** after each op — **Y** same matrix · **N** new size/entries · **0** exit. Nested `while` loops (no broken `goto`).
+## Overview
 
----
+MatrixCalculator_PF is a C++17 square-matrix console calculator developed from a Programming Fundamentals project at FAST-NUCES. It retains 19 menu options and supports matrices from 1x1 to 10x10 using fixed-size double arrays.
 
-## Features
+The maintained version adds a reproducible CMake build, numerical regression checks, real executable transcripts, and an interactive browser implementation. The native application and browser playground have separate entry points, with the same row-equilibrated elimination approach for determinant, inverse, solve and rank.
 
-| # | Feature | Notes |
-|---|---------|--------|
-| 1 | Display matrix A | `setw` / `setprecision` double grid |
-| 2 | Symmetric check | Full `A[i][j] == A[j][i]` for all `n`; prints transpose |
-| 3 | Identity check | Flag **initialized**; diagonal 1 / off-diagonal 0 |
-| 4 | Determinant | Gaussian elimination + partial pivoting; updates `lastDet` |
-| 5 | Adjoint / adjugate | Cofactors for `n ≤ 3`; `A⁻¹·det` for invertible `n ≤ 10` |
-| 6 | Inverse | GE on augmented `[A \| I]`; refuses singular matrices |
-| 7 | Solve `Ax = b` | Correct **n×1** `b` input; GE solve |
-| 8 | Exit | Clean loop exit (no `goto`) |
-| 9 | Transpose | Print / store last result |
-| 10 | Addition `A + B` | Prompts square `B` |
-| 11 | Subtraction `A − B` | Prompts square `B` |
-| 12 | Multiplication `A · B` | Same-size square multiply |
-| 13 | Scalar `k · A` | Double scalar |
-| 14 | Trace | Sum of diagonal |
-| 15 | Rank | Row-reduced GE |
-| 16 | Sample presets | I, Hilbert-ish, singular, symmetric, classic 2×2 / 3×3 |
-| 17 | Banner / about | Pretty professional banner |
-| 18 | Save `result.txt` | Optional dump of last result |
-| 19 | History | Last operation name (+ last numeric result) |
+## What's Inside
 
-**Session control:** after each op — **Y** same matrix · **N** new size/entries · **0** exit. Implemented with nested `while` loops (no broken `goto`).
+The repository keeps the maintained source, IDE project, input fixtures, saved outputs and verification tools together.
 
-**Invariant:** working matrix `A` is never overwritten; all mutating algorithms run on temporary copies.
+| Material | Location |
+| --- | --- |
+| Native C++ application | src/matrix_calculator.cpp |
+| CMake build and CTest target | CMakeLists.txt |
+| Visual Studio solution | MatrixCalculator_PF.sln |
+| Recorded demo inputs | data/demo_cases.json |
+| Actual native stdout | examples/transcripts |
+| Saved result example | examples/saved_result.txt |
+| Browser math and interface | assets/js/matrix.js and assets/js/main.js |
+| Native replay report | docs/reports/native_results.json |
+| Historical implementation and panels | docs/archive/README.md |
 
----
+## Architecture and Design
 
-## Screenshot gallery
+The project is split into four deliberate layers: the native application owns the original interactive workflow, the browser layer provides a zero-install demonstration, the evidence layer records repeatable outputs, and the presentation layer turns those outputs into a reviewable portfolio.
 
-### 01 — Welcome screen (home)
-![01 welcome screen](docs/screenshots/01-main-banner-menu.png)
+The C++ and browser calculators share the same numerical choices—row equilibration, partial pivoting, finite-value checks and bounded 1–10 dimensions—but remain separate entry points so the native assignment stays easy to compile and inspect. The replay data is the contract between the executable and the evidence gallery.
 
-### 02 — Size input (1..10 validation)
-![02 size input](docs/screenshots/02-size-input.png)
+This separation keeps the demo honest: figures are generated from captured executable output, while the browser playground is clearly labelled as a live local calculation. A recruiter can inspect one source file, run one build command, reproduce the test cases and then explore the UI without credentials or a service dependency.
 
-### 03 — Matrix entry
-![03 matrix entry](docs/screenshots/03-matrix-entry.png)
+| Layer | Responsibility | Primary files |
+| --- | --- | --- |
+| Native application | 19-option console workflow and numerical operations | src/matrix_calculator.cpp |
+| Verification | Known inputs, regression assertions and replayed stdout | tests/ · data/ · examples/ |
+| Browser playground | Live local calculations, JSON export, themes and gallery controls | index.html · assets/js/ · assets/css/ |
+| Presentation | Shared README/site content, figures and provenance reports | tools/build_portfolio.py · docs/reports/ |
 
-### 04 — Display matrix
-![04 display matrix](docs/screenshots/04-display-matrix.png)
+## Project Breakdown
 
-### 05 — Symmetric check (yes)
-![05 symmetric yes](docs/screenshots/05-symmetric-yes.png)
+Input is entered one value at a time in the console, with confirmation before matrix or vector entry. The browser accepts comma-separated or space-separated rows. Both paths validate square dimensions and finite numeric input.
 
-### 06 — Identity check
-![06 identity check](docs/screenshots/06-identity-check.png)
+The working matrix is preserved by calculations. Loading a sample is the explicit replacement action. A separate result label keeps the calculation identity intact when About or Save is selected.
 
-### 07 — Determinant 2×2
-![07 determinant 2x2](docs/screenshots/07-determinant-2x2.png)
+For elimination, each row is divided by its largest absolute entry. Partial pivoting selects the largest available column entry in the equilibrated system. A normalized pivot below 1e-9 is treated as numerically zero. Determinant calculations restore row scale factors with fraction/exponent tracking to avoid premature range loss, while inverse and solve scale their augmented right-hand sides.
 
-### 08 — Determinant 3×3
-![08 determinant 3x3](docs/screenshots/08-determinant-3x3.png)
+Direct adjugate formulas handle orders 1 to 3. Larger invertible matrices use inverse times determinant in the native program. The cofactor fallback also handles larger singular matrices, including the recorded singular 4x4 example.
 
-### 09 — Adjoint
-![09 adjoint](docs/screenshots/09-adjoint.png)
+| Operation family | Method | Work and storage |
+| --- | --- | --- |
+| Display, transpose, addition, scaling | Bounded nested loops | O(n²) time |
+| Matrix multiplication | Row-column dot products | O(n³) time |
+| Determinant, inverse, solve, rank | Row equilibration and partial pivoting | O(n³) time |
+| General adjugate fallback | Determinants of transposed cofactors | O(n⁵) time |
+| Working matrices | Fixed arrays, maximum order 10 | O(n²) storage |
 
-### 10 — Inverse (double)
-![10 inverse double](docs/screenshots/10-inverse-double.png)
+## Console Workflow
 
-### 11 — Solve Ax = b
-![11 solve axb](docs/screenshots/11-solve-axb.png)
+Start with option 1, enter the square order, confirm matrix input and enter values row by row. The menu then offers the original operations 1 to 8 and the extended tools 9 to 19.
 
-### 12 — Transpose
-![12 transpose](docs/screenshots/12-transpose.png)
+After a calculation, Y reuses the current matrix, N returns to the welcome screen for another matrix, and 0 exits. Confirm screens also accept a back action. A zero entered as a matrix or vector value remains a numeric zero.
 
-### 13 — Multiply
-![13 multiply](docs/screenshots/13-multiply.png)
+Save writes result.txt in the process working directory. The report identifies the operation behind the stored result and labels the most recent historical determinant separately. A process-specific temporary file and replacement step protect the previous report if a write cannot complete.
 
-### 14 — Rank & trace
-![14 rank trace](docs/screenshots/14-rank-trace.png)
+| Menu | Available action |
+| --- | --- |
+| 1–3 | Display, symmetry and identity checks |
+| 4–7 | Determinant, adjugate, inverse and solve |
+| 8 | Exit |
+| 9–15 | Transpose, addition, subtraction, multiplication, scalar, trace and rank |
+| 16–19 | Sample presets, About, save and last-result review |
 
-### 15 — Singular: no inverse
-![15 singular no inverse](docs/screenshots/15-singular-no-inverse.png)
+## Setup and Build
 
-### 16 — Continue prompt
-![16 continue prompt](docs/screenshots/16-continue-prompt.png)
+The native application needs a C++17 compiler and CMake 3.20 or newer. Visual Studio 2022 with Desktop development with C++ can open MatrixCalculator_PF.sln directly. CMake can also build with GCC or Clang.
 
-### 17 — Sample presets
-![17 sample presets](docs/screenshots/17-sample-presets.png)
+Run the following from the repository root. For a single-configuration generator, the executable is build/matrix_calculator, with .exe on Windows. Visual Studio generators place the Release executable in build/Release. run.bat builds and starts the Windows program. build.ps1 -Test builds and runs CTest.
 
-### 18 — Full session demo
-![18 full session demo](docs/screenshots/18-full-session-demo.png)
+Python with Pillow regenerates the presentation. Playwright and installed Google Chrome run the browser verification script. The source scripts are listed in requirements-dev.txt. The browser page itself uses local JavaScript and needs no package download.
 
-### 19 — Matrix addition
-![19 matrix addition](docs/screenshots/19-matrix-addition.png)
+On Windows, build.ps1 selects Ninja and GCC when both are on PATH, or uses the default CMake generator otherwise. An existing build cache keeps its selected generator. For an explicit GCC build, use cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=g++.
 
-### 20 — Matrix subtraction
-![20 matrix subtraction](docs/screenshots/20-matrix-subtraction.png)
+Install the optional presentation and verification tools with python -m pip install -r requirements-dev.txt. Node.js is needed only for npm test; the JavaScript tests use built-in modules.
 
-### 21 — Scalar multiplication
-![21 scalar multiply](docs/screenshots/21-scalar-multiply.png)
+~~~text
+cmake -S . -B build
+cmake --build build --config Release
+ctest --test-dir build -C Release --output-on-failure
+python -m pip install -r requirements-dev.txt
+python tools/collect_results.py
+python tools/build_portfolio.py
+npm test
+python -m http.server 8000
+~~~
 
-### 22 — Asymmetric check
-![22 asymmetric check](docs/screenshots/22-asymmetric-check.png)
+## Reproduce the Demo
 
-### 23 — Determinant 4×4 (GE)
-![23 det 4x4 ge](docs/screenshots/23-det-4x4-ge.png)
+The recorded 2x2 working matrix is A = [[4,7],[2,6]]. Its determinant is 10. Its inverse is [[0.6,-0.7],[-0.2,0.4]]. For b = [18,14], the known solution is x = [1,2].
 
-### 24 — Solve singular system
-![24 solve singular](docs/screenshots/24-solve-singular.png)
+The native replay script reads data/demo_cases.json, supplies inputs through the executable's normal menu, checks expected output and saves full stdout. The 24 figures use focused excerpts from those actual runs. Each figure links to its full transcript.
 
-### 25 — Save result.txt
-![25 save result file](docs/screenshots/25-save-result-file.png)
+The webpage playground calculates new inputs locally in the browser. Use a saved example to populate a matrix, choose an operation and calculate. The saved-case viewer shows native results separately, making it possible to compare live browser calculations with recorded console evidence.
+
+## Results and Verification
+
+The native replay records 24 passing cases. Four additional input-flow checks cover truncated matrix, vector and scalar input, and an overflowing size token. The regression executable checks known determinants, inverse residuals, source preservation, singular behavior, small scales, maximum order and report provenance.
+
+The browser math tests cover arithmetic, inverse residuals, row scaling, singular adjugates, malformed input, mismatched dimensions and non-finite outputs. Responsive browser checks exercise both themes, matrix calculations, downloads, gallery controls and local paths.
+
+The verification report distinguishes executed checks from platforms and interfaces that still require separate testing. Saved results represent the included inputs and compiler environment.
+
+| Recorded input | Expected observation |
+| --- | --- |
+| [[4,7],[2,6]] | det(A) = 10 and a finite inverse |
+| [[0,2],[3,4]] | A row swap produces determinant -6 |
+| [[1,2],[2,4]] | No inverse or unique solution |
+| diag(1e-12,2e-12) | Inverse entries 1e12 and 5e11 |
+| diag(1,2,3,0) | Singular 4x4 adjugate has bottom-right value 6 |
+| diag(1,2,...,10) | Regression determinant 3,628,800 |
 
-### 26 — Operation history
-![26 operation history](docs/screenshots/26-operation-history.png)
+## Engineering Quality Signals
 
-### 27 — Invalid size error
-![27 invalid size error](docs/screenshots/27-invalid-size-error.png)
+The maintained build keeps the assignment recognizable while making its behavior easier to review: one source file contains the native workflow, CMake and Visual Studio entry points are both retained, and the replay tool exercises the same menus a person would use.
 
-### 28 — New matrix prompt (N)
-![28 new matrix prompt](docs/screenshots/28-new-matrix-prompt.png)
+Quality checks cover both expected results and failure paths. The suite checks pivoting, singular matrices, extreme scales, malformed tokens, non-finite values, oversized dimensions, report provenance and preservation of the working matrix. The browser tests independently cover calculations, downloads, themes, navigation and gallery controls.
 
-### 29 — Trace-only demo
-![29 trace only demo](docs/screenshots/29-trace-only-demo.png)
+Evidence is stored beside the code instead of being described only in prose. A recruiter can open a transcript, compare it with a 1440 × 900 figure, inspect the focused JSON record and rerun the case from data/demo_cases.json.
 
-### 30 — Complete feature map
-![30 complete feature map](docs/screenshots/30-complete-feature-map.png)
+| Signal | What it demonstrates | Evidence |
+| --- | --- | --- |
+| Reproducible build | Fresh native executable and CTest target | CMakeLists.txt · build.ps1 |
+| Numerical regression | Known values, residuals, pivots, ranges and singular behavior | tests/matrix_regression.cpp |
+| Recorded behavior | 24 normal menu flows plus four defensive input checks | data/demo_cases.json · examples/transcripts |
+| Reviewable presentation | Shared captions, source links and figure dimensions | README.md · index.html · assets/figures/ |
 
-Full menu map plus numerical engine note: **GE = Gaussian Elimination** (with partial pivoting), supported for all square sizes **n = 1 … 10** (`n ≤ 10`), used for determinant, inverse, `Ax = b`, and rank.
+## Folder Structure
 
----
+~~~text
+MatrixCalculator_PF/
+  src/                  Maintained native C++ source
+  tests/                Native and browser math checks
+  data/                 Native replay cases
+  examples/             Transcripts and saved text output
+  tools/                Replay, figure build and browser verification
+  assets/               Website CSS, scripts and 24 figure pairs
+  docs/                 Methods, reports and historical archive
+  CMakeLists.txt        Portable build and CTest entry point
+  MatrixCalculator_PF.sln
+  MatrixCalculator_PF.vcxproj
+  index.html
+  README.md
+~~~
 
-## Architecture / algorithms
+## Limitations
 
-Single translation unit [`Source.cpp`](Source.cpp) (PF style). Helpers live in the same file as free functions / shared session state.
+The supported order is 1 to 10 and all inputs are square. Multiplication uses two matrices of the same order. The solver reports whether a unique solution exists; it does not classify inconsistent systems separately from systems with infinitely many solutions.
 
-| Piece | Role |
-|-------|------|
-| `determinantGE` | Partial-pivoting GE on a **copy**; writes `lastDet` |
-| `inverseGE` | Row-reduce `[A \| I]` → `A⁻¹` |
-| `solveGE` | Row-reduce `[A \| b]` → `x` |
-| `rankGE` | Count nonzero pivots after reduction |
-| `adjointCofactors` | Course-style cofactor/adjugate for `n ≤ 3` |
-| `adjointViaInverse` | `adj(A) = A⁻¹ · det(A)` when invertible |
-| Session state | `lastDet`, `lastOpName`, last matrix/vector result, optional `result.txt` |
+Calculations use floating-point arithmetic. Row scaling improves pivot selection but does not guarantee accuracy for ill-conditioned input. Very large values can overflow, tiny determinants can underflow, and a tolerance can classify nearly dependent rows as rank deficient. Both implementations track determinant scale factors as a fraction and binary exponent; the browser uses JavaScript Number.
 
-**Gaussian elimination (preferred for all `n ≤ 10`):** for each column, select the largest-magnitude pivot below the diagonal, swap rows, scale, and eliminate. Determinant is the signed product of pivots. Inverse and solve use the same pivot strategy on an augmented matrix.
+Symmetry and identity checks use the configured absolute 1e-9 tolerance. A very wide 10x10 console output may require a wider terminal. Matrix data remains in the local process or browser. The report is a text snapshot of the latest result, rather than a persistent database of the complete session.
+## Interactive Browser
 
-**Adjoint:** for small `n`, cofactors match the course worksheet. For larger invertible matrices, `Inv * det` yields the adjugate without building every minor explicitly.
+Open [index.html](index.html) directly or use the HTTP preview. The browser accepts new inputs, reports errors inline and exports a JSON result. Ctrl + Enter calculates while editing. The saved-case viewer displays native evidence separately.
 
-Includes: `<iostream> <iomanip> <cmath> <fstream> <string>`. No C++20 requirement.
+The gallery has search, filters, zoom, Previous/Next, arrow-key navigation and swipe. Light/dark choice is saved locally. Wide tables and code scroll horizontally.
 
----
+## Source and Downloads
 
-## Menu map
+| File | Purpose |
+| --- | --- |
+| [Native source](src/matrix_calculator.cpp) | Maintained 19-option console program |
+| [CMake build](CMakeLists.txt) | Build and CTest targets |
+| [Visual Studio solution](MatrixCalculator_PF.sln) | IDE project |
+| [Architecture notes](docs/architecture.md) | Layer boundaries and evidence flow |
+| [Implementation](docs/implementation.md) | Methods, tolerance and result lifecycle |
+| [Recorded inputs](data/demo_cases.json) | Reproducible menu cases |
+| [Replay script](tools/collect_results.py) | Executes and checks native cases |
+| [Portfolio builder](tools/build_portfolio.py) | Regenerates figures, README and webpage |
+| [Native report](docs/reports/native_results.json) | Actual stdout excerpts and metadata |
+| [Saved text result](examples/saved_result.txt) | Actual result.txt output |
+| [Verification](docs/reports/verification.md) | Executed checks and scope |
+| [Archive index](docs/archive/README.md) | Historical source and earlier illustrations |
 
-```
-┌─ COURSE ──────────────────────────────────────┐
-│ 1 Display · 2 Symmetric · 3 Identity          │
-│ 4 Det · 5 Adjoint · 6 Inverse · 7 Ax=b · 8 Exit│
-├─ EXTRAS ──────────────────────────────────────┤
-│ 9 Transpose · 10 + · 11 − · 12 * · 13 scalar  │
-│ 14 Trace · 15 Rank · 16 Samples · 17 Banner   │
-│ 18 Save result.txt · 19 History               │
-└───────────────────────────────────────────────┘
-         Y / N / 0  after each operation
-```
+## Figure Index
 
----
+1. [Labeled matrix display](#01_display_v2)
+2. [Symmetric matrix check](#02_symmetric_v2)
+3. [Asymmetric matrix check](#03_asymmetric_v2)
+4. [Identity matrix check](#04_identity_v2)
+5. [2x2 determinant](#05_determinant_2_v2)
+6. [3x3 determinant](#06_determinant_3_v2)
+7. [2x2 inverse](#07_inverse_v2)
+8. [Singular inverse rejection](#08_singular_inverse_v2)
+9. [Unique linear-system solution](#09_solve_v2)
+10. [Nonunique system rejection](#10_singular_solve_v2)
+11. [Matrix transpose](#11_transpose_v2)
+12. [Matrix addition](#12_addition_v2)
+13. [Matrix subtraction](#13_subtraction_v2)
+14. [Matrix multiplication](#14_multiplication_v2)
+15. [Scalar multiplication](#15_scalar_v2)
+16. [Matrix trace](#16_trace_v2)
+17. [Rank of dependent rows](#17_rank_v2)
+18. [3x3 adjugate](#18_adjugate_v2)
+19. [Singular 4x4 adjugate](#19_singular_adjugate_v2)
+20. [Small-scale inverse](#20_small_scale_v2)
+21. [Zero first pivot](#21_pivot_swap_v2)
+22. [Saved result provenance](#22_saved_history_v2)
+23. [Finite-value validation](#23_validation_v2)
+24. [Native regression report](#24_regression_v2)
 
-## Build & run
+## Screenshots
 
-### Visual Studio 2022 (recommended)
+Each frame uses actual native output or its regression report. Full images are 1440 × 900 and previews are 960 × 600.
 
-1. Open `PF_Project_2.sln`
-2. Configuration: **Release** · Platform: **x64**
-3. Build Solution (`Ctrl+Shift+B`)
-4. Run `x64\Release\PF_Project_2.exe`
+<a id="01_display_v2"></a>
 
-MSBuild (Community 2022 full path):
+### Labeled matrix display
 
-```bat
-"C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" PF_Project_2.sln /p:Configuration=Release /p:Platform=x64
-```
+<p align="left"><a href="assets/figures/full/01_display_v2.png"><img src="assets/figures/preview/01_display_v2.png" width="960" height="600" alt="Labeled matrix display"></a></p>
 
-### g++
+The native calculator displays a 2x2 working matrix with labeled rows and columns.
 
-```bash
-g++ -std=c++17 -O2 -o MatrixCalc Source.cpp
-./MatrixCalc
-```
+[Native transcript](examples/transcripts/display.txt)
 
----
+<a id="02_symmetric_v2"></a>
 
-## Test cases (worked examples)
+### Symmetric matrix check
 
-| Case | Input | Expected |
-|------|--------|----------|
-| Det 2×2 | `[[2,1],[5,3]]` | `det = 1` |
-| Inv 2×2 | same | `[[3,-1],[-5,2]]` |
-| Adj 2×2 | same | `[[3,-1],[-5,2]]` |
-| Solve | `A` above, `b = [1,1]` | `x = [2, -3]` |
-| Det 3×3 | `[[1,2,3],[0,1,4],[5,6,0]]` | `det = 1` |
-| Trace | same 3×3 | `trace = 2` |
-| Rank full | same 3×3 | `rank = 3` |
-| Singular | `[[1,2,3],[2,4,6],[1,1,1]]` | `det = 0`, inverse refused, `rank = 2` |
-| Symmetric | `[[2,1,0],[1,3,4],[0,4,5]]` | reports **SYMMETRIC** |
-| Identity | `I₃` | reports identity |
-| Size guard | `12` or `0` | error; re-prompt until `1..10` |
-| Multiply | `[[1,2],[3,4]] * [[2,0],[1,2]]` | `[[4,4],[10,8]]` |
+<p align="left"><a href="assets/figures/full/02_symmetric_v2.png"><img src="assets/figures/preview/02_symmetric_v2.png" width="960" height="600" alt="Symmetric matrix check"></a></p>
 
----
+The two off-diagonal entries match, so the pairwise symmetry check succeeds.
 
-## Comparison: old bugs fixed
+[Native transcript](examples/transcripts/symmetric.txt)
 
-| Issue in original | Fix in this rewrite |
-|-------------------|---------------------|
-| Menu text said “1-7” while case 8 existed | Menu clearly lists **1–19**; course DNA 1–8 intact |
-| `goto New / cont / terminate` (fragile) | Nested `while` loops + flags |
-| No size validation | Size must be **1..10** |
-| Identity `bool a` uninitialized | `isId = true` then disprove |
-| Det / inv / solve only for 2×2 & 3×3 | GE for **all n ≤ 10** |
-| Integer matrices + integer division on inverse | **`double` throughout**; formatted output |
-| Adjoint / inverse / solve **overwrote** `A` | Ops use temps; `A` preserved |
-| Shared `deter` vs local shadowing | Shared `lastDet` updated by GE |
-| Symmetric only hardcoded for n=2,3 | Full pairwise compare for all `n` |
-| `Ax=b` wrong loop bounds for `b` | Correct **n×1** vector input |
-| 3×3 adjoint print typo (`Matrix[1][2]` twice) | Correct row/column print of temp adjugate |
-| No extras | Transpose, ±, *, scalar, trace, rank, samples, save, history |
+<a id="03_asymmetric_v2"></a>
 
----
+### Asymmetric matrix check
 
-## Author
+<p align="left"><a href="assets/figures/full/03_asymmetric_v2.png"><img src="assets/figures/preview/03_asymmetric_v2.png" width="960" height="600" alt="Asymmetric matrix check"></a></p>
 
-**Mohammad Rohaan** · Roll **22I-2327** · Programming Fundamentals square-matrix project (professional rebuild).
+The original input is compared with its transpose and correctly classified as asymmetric.
+
+[Native transcript](examples/transcripts/asymmetric.txt)
+
+<a id="04_identity_v2"></a>
+
+### Identity matrix check
+
+<p align="left"><a href="assets/figures/full/04_identity_v2.png"><img src="assets/figures/preview/04_identity_v2.png" width="960" height="600" alt="Identity matrix check"></a></p>
+
+A 3x3 identity input passes the diagonal and off-diagonal checks.
+
+[Native transcript](examples/transcripts/identity.txt)
+
+<a id="05_determinant_2_v2"></a>
+
+### 2x2 determinant
+
+<p align="left"><a href="assets/figures/full/05_determinant_2_v2.png"><img src="assets/figures/preview/05_determinant_2_v2.png" width="960" height="600" alt="2x2 determinant"></a></p>
+
+Gaussian elimination returns determinant 10 for the bundled 2x2 example.
+
+[Native transcript](examples/transcripts/determinant_2.txt)
+
+<a id="06_determinant_3_v2"></a>
+
+### 3x3 determinant
+
+<p align="left"><a href="assets/figures/full/06_determinant_3_v2.png"><img src="assets/figures/preview/06_determinant_3_v2.png" width="960" height="600" alt="3x3 determinant"></a></p>
+
+The classic 3x3 example has determinant 1, providing a known-value calculation.
+
+[Native transcript](examples/transcripts/determinant_3.txt)
+
+<a id="07_inverse_v2"></a>
+
+### 2x2 inverse
+
+<p align="left"><a href="assets/figures/full/07_inverse_v2.png"><img src="assets/figures/preview/07_inverse_v2.png" width="960" height="600" alt="2x2 inverse"></a></p>
+
+The native inverse has entries 0.6, -0.7, -0.2 and 0.4.
+
+[Native transcript](examples/transcripts/inverse.txt)
+
+<a id="08_singular_inverse_v2"></a>
+
+### Singular inverse rejection
+
+<p align="left"><a href="assets/figures/full/08_singular_inverse_v2.png"><img src="assets/figures/preview/08_singular_inverse_v2.png" width="960" height="600" alt="Singular inverse rejection"></a></p>
+
+Dependent rows are detected, and the calculator reports that an inverse does not exist.
+
+[Native transcript](examples/transcripts/singular_inverse.txt)
+
+<a id="09_solve_v2"></a>
+
+### Unique linear-system solution
+
+<p align="left"><a href="assets/figures/full/09_solve_v2.png"><img src="assets/figures/preview/09_solve_v2.png" width="960" height="600" alt="Unique linear-system solution"></a></p>
+
+For A x = [18,14], elimination returns the known solution x = [1,2].
+
+[Native transcript](examples/transcripts/solve.txt)
+
+<a id="10_singular_solve_v2"></a>
+
+### Nonunique system rejection
+
+<p align="left"><a href="assets/figures/full/10_singular_solve_v2.png"><img src="assets/figures/preview/10_singular_solve_v2.png" width="960" height="600" alt="Nonunique system rejection"></a></p>
+
+A dependent system is rejected as having no unique solution.
+
+[Native transcript](examples/transcripts/singular_solve.txt)
+
+<a id="11_transpose_v2"></a>
+
+### Matrix transpose
+
+<p align="left"><a href="assets/figures/full/11_transpose_v2.png"><img src="assets/figures/preview/11_transpose_v2.png" width="960" height="600" alt="Matrix transpose"></a></p>
+
+Rows become columns while the stored working matrix stays available for later operations.
+
+[Native transcript](examples/transcripts/transpose.txt)
+
+<a id="12_addition_v2"></a>
+
+### Matrix addition
+
+<p align="left"><a href="assets/figures/full/12_addition_v2.png"><img src="assets/figures/preview/12_addition_v2.png" width="960" height="600" alt="Matrix addition"></a></p>
+
+Adding [[1,2],[3,4]] produces [[5,9],[5,10]].
+
+[Native transcript](examples/transcripts/addition.txt)
+
+<a id="13_subtraction_v2"></a>
+
+### Matrix subtraction
+
+<p align="left"><a href="assets/figures/full/13_subtraction_v2.png"><img src="assets/figures/preview/13_subtraction_v2.png" width="960" height="600" alt="Matrix subtraction"></a></p>
+
+Subtracting [[1,2],[3,4]] produces [[3,5],[-1,2]].
+
+[Native transcript](examples/transcripts/subtraction.txt)
+
+<a id="14_multiplication_v2"></a>
+
+### Matrix multiplication
+
+<p align="left"><a href="assets/figures/full/14_multiplication_v2.png"><img src="assets/figures/preview/14_multiplication_v2.png" width="960" height="600" alt="Matrix multiplication"></a></p>
+
+The triple-loop product produces [[25,36],[20,28]] for the two recorded inputs.
+
+[Native transcript](examples/transcripts/multiplication.txt)
+
+<a id="15_scalar_v2"></a>
+
+### Scalar multiplication
+
+<p align="left"><a href="assets/figures/full/15_scalar_v2.png"><img src="assets/figures/preview/15_scalar_v2.png" width="960" height="600" alt="Scalar multiplication"></a></p>
+
+A negative scalar multiplies every cell without replacing the working matrix.
+
+[Native transcript](examples/transcripts/scalar.txt)
+
+<a id="16_trace_v2"></a>
+
+### Matrix trace
+
+<p align="left"><a href="assets/figures/full/16_trace_v2.png"><img src="assets/figures/preview/16_trace_v2.png" width="960" height="600" alt="Matrix trace"></a></p>
+
+The trace is the sum of the two diagonal entries, 4 + 6.
+
+[Native transcript](examples/transcripts/trace.txt)
+
+<a id="17_rank_v2"></a>
+
+### Rank of dependent rows
+
+<p align="left"><a href="assets/figures/full/17_rank_v2.png"><img src="assets/figures/preview/17_rank_v2.png" width="960" height="600" alt="Rank of dependent rows"></a></p>
+
+Row reduction finds one independent row in this 3x3 matrix.
+
+[Native transcript](examples/transcripts/rank.txt)
+
+<a id="18_adjugate_v2"></a>
+
+### 3x3 adjugate
+
+<p align="left"><a href="assets/figures/full/18_adjugate_v2.png"><img src="assets/figures/preview/18_adjugate_v2.png" width="960" height="600" alt="3x3 adjugate"></a></p>
+
+The direct cofactor implementation transposes the cofactor matrix to form the adjugate.
+
+[Native transcript](examples/transcripts/adjugate.txt)
+
+<a id="19_singular_adjugate_v2"></a>
+
+### Singular 4x4 adjugate
+
+<p align="left"><a href="assets/figures/full/19_singular_adjugate_v2.png"><img src="assets/figures/preview/19_singular_adjugate_v2.png" width="960" height="600" alt="Singular 4x4 adjugate"></a></p>
+
+The larger singular case has a valid adjugate with bottom-right value 6.
+
+[Native transcript](examples/transcripts/singular_adjugate.txt)
+
+<a id="20_small_scale_v2"></a>
+
+### Small-scale inverse
+
+<p align="left"><a href="assets/figures/full/20_small_scale_v2.png"><img src="assets/figures/preview/20_small_scale_v2.png" width="960" height="600" alt="Small-scale inverse"></a></p>
+
+Row equilibration preserves the inverse of a tiny, well-scaled diagonal matrix.
+
+[Native transcript](examples/transcripts/small_scale.txt)
+
+<a id="21_pivot_swap_v2"></a>
+
+### Zero first pivot
+
+<p align="left"><a href="assets/figures/full/21_pivot_swap_v2.png"><img src="assets/figures/preview/21_pivot_swap_v2.png" width="960" height="600" alt="Zero first pivot"></a></p>
+
+Partial pivoting swaps rows and preserves the determinant sign.
+
+[Native transcript](examples/transcripts/pivot_swap.txt)
+
+<a id="22_saved_history_v2"></a>
+
+### Saved result provenance
+
+<p align="left"><a href="assets/figures/full/22_saved_history_v2.png"><img src="assets/figures/preview/22_saved_history_v2.png" width="960" height="600" alt="Saved result provenance"></a></p>
+
+A saved report keeps the calculation name even after the About screen is opened.
+
+[Native transcript](examples/transcripts/saved_history.txt)
+
+<a id="23_validation_v2"></a>
+
+### Finite-value validation
+
+<p align="left"><a href="assets/figures/full/23_validation_v2.png"><img src="assets/figures/preview/23_validation_v2.png" width="960" height="600" alt="Finite-value validation"></a></p>
+
+NaN, infinity and overflowing numeric tokens are rejected before a valid scalar is accepted.
+
+[Native transcript](examples/transcripts/validation.txt)
+
+<a id="24_regression_v2"></a>
+
+### Native regression report
+
+<p align="left"><a href="assets/figures/full/24_regression_v2.png"><img src="assets/figures/preview/24_regression_v2.png" width="960" height="600" alt="Native regression report"></a></p>
+
+The regression executable checks numerical values, residuals, boundary sizes and save provenance.
+
+[Native transcript](examples/transcripts/regression.txt)
+
+## About the Author
+
+Mohammad Rohaan · BS Computer Science, FAST-NUCES · 22I-2327.
+
+This project demonstrates array-based C++, input handling, numerical methods, reproducible builds, regression checks and an interactive technical presentation. The historical source and earlier generated illustrations remain available in the archive.
+
+[Author profile](https://github.com/rohaan2802)

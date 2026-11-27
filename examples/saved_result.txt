@@ -1,0 +1,15 @@
+==============================================
+  Matrix Calculator PF — Last Result
+==============================================
+
+  Result operation : Transpose
+
+  Result type : Matrix (2 x 2)
+
+                          Column 1          Column 2
+  Row  1 |          4.000000          2.000000  |
+  Row  2 |          7.000000          6.000000  |
+
+  Most recent determinant : 0
+
+==============================================

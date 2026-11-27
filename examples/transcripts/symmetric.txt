@@ -1,0 +1,110 @@
+
+  =====================================================================
+  ||                                                                 ||
+  ||           MATRIX CALCULATOR  PF                                 ||
+  ||                                                                 ||
+  ||     Square matrices up to 10 x 10                               ||
+  ||     Author: Mohammad Rohaan - 22I-2327                          ||
+  ||                                                                 ||
+  =====================================================================
+
+   WELCOME
+
+     1  = Start calculator
+     0  = Exit
+  Enter your choice: 
+   MATRIX SIZE
+
+   Enter the size of the square matrix (1 to 10).
+   (Enter 0 to go back)
+  Enter matrix size:   Saved: 2
+
+  Enter matrix A (2 x 2)
+
+     1  = Continue
+     0  = Go back
+  Enter your choice: 
+  =====================================================================
+   INPUT MATRIX A  (2 x 2)   —  total entries: 4
+  =====================================================================
+   Enter one number at a time. Decimals are allowed (example: 2.5).
+   If a value is wrong, you can type it again for that box.
+
+  --- Row 1 of 2 ---
+  Enter value for Row 1, Column 1:     saved: 2.0000
+  Enter value for Row 1, Column 2:     saved: 1.0000
+
+  --- Row 2 of 2 ---
+  Enter value for Row 2, Column 1:     saved: 1.0000
+  Enter value for Row 2, Column 2:     saved: 3.0000
+
+  ---------------------------------------------------------------------
+   Done — preview of matrix A:
+  ---------------------------------------------------------------------
+
+  Matrix (2 x 2):
+            Column 1  Column 2
+  Row  1 |  2.000000  1.000000  |
+  Row  2 |  1.000000  3.000000  |
+
+
+
+  ---------------------------------------------------------------------
+   Status
+     Last step : None
+  ---------------------------------------------------------------------
+
+   ========================  MAIN MENU (1-8)  =========================
+
+     1.  Show matrix A
+     2.  Check if A is symmetric
+     3.  Check if A is identity
+     4.  Determinant of A
+     5.  Adjoint of A
+     6.  Inverse of A
+     7.  Solve A x = b
+     8.  Exit program
+
+   ========================  MORE TOOLS (9-19)  =======================
+
+     9.  Transpose of A
+    10.  Add matrices            A + B
+    11.  Subtract matrices       A - B
+    12.  Multiply matrices       A * B
+    13.  Multiply by a number    k * A
+    14.  Trace of A
+    15.  Rank of A
+    16.  Load a sample matrix
+    17.  Show about / title
+    18.  Save last result        (result.txt)
+    19.  Show last result
+
+  ---------------------------------------------------------------------
+   Choose 1 to 19     |     0 = go back to welcome
+  Enter your choice: 
+  --- Original A ---
+
+  Matrix (2 x 2):
+            Column 1  Column 2
+  Row  1 |  2.000000  1.000000  |
+  Row  2 |  1.000000  3.000000  |
+
+
+  --- Transpose A^T ---
+
+  Matrix (2 x 2):
+            Column 1  Column 2
+  Row  1 |  2.000000  1.000000  |
+  Row  2 |  1.000000  3.000000  |
+
+
+  Result: A is SYMMETRIC (A = A^T).
+
+  ---------------------------------------------------------------------
+  What next?
+     Y  = same matrix — show menu again
+     N  = new matrix (welcome)
+     0  = exit program
+  Enter your choice: 
+  Goodbye. Thank you for using Matrix Calculator.
+

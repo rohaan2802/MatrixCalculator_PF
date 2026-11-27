@@ -1,0 +1,11 @@
+{
+  "name": "matrix-calculator-pf",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/browser_math.test.js",
+    "build": "python tools/build_portfolio.py",
+    "demo": "python tools/collect_results.py",
+    "start": "python -m http.server 8000"
+  }
+}

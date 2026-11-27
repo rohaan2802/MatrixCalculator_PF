@@ -1,0 +1,12 @@
+[
+  "24 figures, 48 dimensions, captions and README/site order verified",
+  "1440px light: calculator, validation, JSON, navigation, gallery, zoom, keys, simulated swipe and top control passed",
+  "1440px dark: calculator, validation, JSON, navigation, gallery, zoom, keys, simulated swipe and top control passed",
+  "1024px light: calculator, validation, JSON, navigation, gallery, zoom, keys, simulated swipe and top control passed",
+  "1024px dark: calculator, validation, JSON, navigation, gallery, zoom, keys, simulated swipe and top control passed",
+  "390px light: calculator, validation, JSON, navigation, gallery, zoom, keys, simulated swipe and top control passed",
+  "390px dark: calculator, validation, JSON, navigation, gallery, zoom, keys, simulated swipe and top control passed",
+  "320px light: calculator, validation, JSON, navigation, gallery, zoom, keys, simulated swipe and top control passed",
+  "320px dark: calculator, validation, JSON, navigation, gallery, zoom, keys, simulated swipe and top control passed",
+  "Direct file preview calculates without an HTTP server"
+]

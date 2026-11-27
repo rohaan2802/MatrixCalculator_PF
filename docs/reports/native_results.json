@@ -1,0 +1,672 @@
+{
+  "source": "src/matrix_calculator.cpp",
+  "source_sha256": "d2432821f1fb847dc388a0330ca0dffd02035afd2b611071a0e91ef40c94fa13",
+  "mode": "native executable replay",
+  "cases": 24,
+  "passed": 24,
+  "input_flow_checks": 4,
+  "records": [
+    {
+      "id": "display",
+      "title": "Labeled matrix display",
+      "operation": 1,
+      "matrix": [
+        [
+          4,
+          7
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "Matrix A (2x2)"
+      ],
+      "category": "Operations",
+      "caption": "The native calculator displays a 2x2 working matrix with labeled rows and columns.",
+      "passed": true,
+      "transcript": "examples/transcripts/display.txt",
+      "focus": "--- Matrix A (2x2) ---\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  4.000000  7.000000  |\n  Row  2 |  2.000000  6.000000  |"
+    },
+    {
+      "id": "symmetric",
+      "title": "Symmetric matrix check",
+      "operation": 2,
+      "matrix": [
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          3
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "is SYMMETRIC"
+      ],
+      "category": "Operations",
+      "caption": "The two off-diagonal entries match, so the pairwise symmetry check succeeds.",
+      "passed": true,
+      "transcript": "examples/transcripts/symmetric.txt",
+      "focus": "--- Original A ---\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  2.000000  1.000000  |\n  Row  2 |  1.000000  3.000000  |\n\n\n  --- Transpose A^T ---\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  2.000000  1.000000  |\n  Row  2 |  1.000000  3.000000  |\n\n\n  Result: A is SYMMETRIC (A = A^T)."
+    },
+    {
+      "id": "asymmetric",
+      "title": "Asymmetric matrix check",
+      "operation": 2,
+      "matrix": [
+        [
+          4,
+          7
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "NOT symmetric"
+      ],
+      "category": "Operations",
+      "caption": "The original input is compared with its transpose and correctly classified as asymmetric.",
+      "passed": true,
+      "transcript": "examples/transcripts/asymmetric.txt",
+      "focus": "--- Original A ---\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  4.000000  7.000000  |\n  Row  2 |  2.000000  6.000000  |\n\n\n  --- Transpose A^T ---\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  4.000000  2.000000  |\n  Row  2 |  7.000000  6.000000  |\n\n\n  Result: A is NOT symmetric."
+    },
+    {
+      "id": "identity",
+      "title": "Identity matrix check",
+      "operation": 3,
+      "matrix": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "IS an identity"
+      ],
+      "category": "Operations",
+      "caption": "A 3x3 identity input passes the diagonal and off-diagonal checks.",
+      "passed": true,
+      "transcript": "examples/transcripts/identity.txt",
+      "focus": "--- Matrix A ---\n\n  Matrix (3 x 3):\n            Column 1  Column 2  Column 3\n  Row  1 |  1.000000  0.000000  0.000000  |\n  Row  2 |  0.000000  1.000000  0.000000  |\n  Row  3 |  0.000000  0.000000  1.000000  |\n\n\n  Result: A IS an identity matrix."
+    },
+    {
+      "id": "determinant_2",
+      "title": "2x2 determinant",
+      "operation": 4,
+      "matrix": [
+        [
+          4,
+          7
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "Determinant = 10.00000000"
+      ],
+      "category": "Operations",
+      "caption": "Gaussian elimination returns determinant 10 for the bundled 2x2 example.",
+      "passed": true,
+      "transcript": "examples/transcripts/determinant_2.txt",
+      "focus": "--- Matrix A ---\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  4.000000  7.000000  |\n  Row  2 |  2.000000  6.000000  |\n\n\n  Determinant = 10.00000000"
+    },
+    {
+      "id": "determinant_3",
+      "title": "3x3 determinant",
+      "operation": 4,
+      "matrix": [
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          4
+        ],
+        [
+          5,
+          6,
+          0
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "Determinant = 1.00000000"
+      ],
+      "category": "Operations",
+      "caption": "The classic 3x3 example has determinant 1, providing a known-value calculation.",
+      "passed": true,
+      "transcript": "examples/transcripts/determinant_3.txt",
+      "focus": "--- Matrix A ---\n\n  Matrix (3 x 3):\n            Column 1  Column 2  Column 3\n  Row  1 |  1.000000  2.000000  3.000000  |\n  Row  2 |  0.000000  1.000000  4.000000  |\n  Row  3 |  5.000000  6.000000  0.000000  |\n\n\n  Determinant = 1.00000000"
+    },
+    {
+      "id": "inverse",
+      "title": "2x2 inverse",
+      "operation": 6,
+      "matrix": [
+        [
+          4,
+          7
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "Inverse of A:",
+        "0.600000",
+        "-0.700000"
+      ],
+      "category": "Operations",
+      "caption": "The native inverse has entries 0.6, -0.7, -0.2 and 0.4.",
+      "passed": true,
+      "transcript": "examples/transcripts/inverse.txt",
+      "focus": "--- Matrix A ---\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  4.000000  7.000000  |\n  Row  2 |  2.000000  6.000000  |\n\n  Determinant = 10.00000000\n\n  Inverse of A:\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  0.600000 -0.700000  |\n  Row  2 | -0.200000  0.400000  |"
+    },
+    {
+      "id": "singular_inverse",
+      "title": "Singular inverse rejection",
+      "operation": 6,
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "inverse does not exist"
+      ],
+      "category": "Edge cases",
+      "caption": "Dependent rows are detected, and the calculator reports that an inverse does not exist.",
+      "passed": true,
+      "transcript": "examples/transcripts/singular_inverse.txt",
+      "focus": "--- Matrix A ---\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  1.000000  2.000000  |\n  Row  2 |  2.000000  4.000000  |\n\n  Determinant = 0.00000000\n\n  Sorry: inverse does not exist for this matrix\n  (determinant is zero)."
+    },
+    {
+      "id": "solve",
+      "title": "Unique linear-system solution",
+      "operation": 7,
+      "matrix": [
+        [
+          4,
+          7
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "extra": [
+        "1",
+        "18",
+        "14"
+      ],
+      "contains": [
+        "Solution x:",
+        "1.000000",
+        "2.000000"
+      ],
+      "category": "Operations",
+      "caption": "For A x = [18,14], elimination returns the known solution x = [1,2].",
+      "passed": true,
+      "transcript": "examples/transcripts/solve.txt",
+      "focus": "=====================================================================\n   INPUT VECTOR b  (2 x 1)\n  =====================================================================\n\n  Enter value for Entry 1:     saved: 18.0000\n  Enter value for Entry 2:     saved: 14.0000\n\n   Vector b preview:\n\n  Entry  1  =       18.000000\n  Entry  2  =       14.000000\n\n\n  --- Vector b ---\n\n  Entry  1  =       18.000000\n  Entry  2  =       14.000000\n\n\n  Solution x:\n\n  Entry  1  =        1.000000\n  Entry  2  =        2.000000"
+    },
+    {
+      "id": "singular_solve",
+      "title": "Nonunique system rejection",
+      "operation": 7,
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "extra": [
+        "1",
+        "3",
+        "6"
+      ],
+      "contains": [
+        "no single unique answer"
+      ],
+      "category": "Edge cases",
+      "caption": "A dependent system is rejected as having no unique solution.",
+      "passed": true,
+      "transcript": "examples/transcripts/singular_solve.txt",
+      "focus": "=====================================================================\n   INPUT VECTOR b  (2 x 1)\n  =====================================================================\n\n  Enter value for Entry 1:     saved: 3.0000\n  Enter value for Entry 2:     saved: 6.0000\n\n   Vector b preview:\n\n  Entry  1  =        3.000000\n  Entry  2  =        6.000000\n\n\n  --- Vector b ---\n\n  Entry  1  =        3.000000\n  Entry  2  =        6.000000\n\n\n  Sorry: there is no single unique answer for this system."
+    },
+    {
+      "id": "transpose",
+      "title": "Matrix transpose",
+      "operation": 9,
+      "matrix": [
+        [
+          4,
+          7
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "Transpose A^T"
+      ],
+      "category": "Operations",
+      "caption": "Rows become columns while the stored working matrix stays available for later operations.",
+      "passed": true,
+      "transcript": "examples/transcripts/transpose.txt",
+      "focus": "--- Transpose A^T ---\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  4.000000  2.000000  |\n  Row  2 |  7.000000  6.000000  |"
+    },
+    {
+      "id": "addition",
+      "title": "Matrix addition",
+      "operation": 10,
+      "matrix": [
+        [
+          4,
+          7
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "extra": [
+        "1",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "contains": [
+        "A + B",
+        "5.000000",
+        "10.000000"
+      ],
+      "category": "Operations",
+      "caption": "Adding [[1,2],[3,4]] produces [[5,9],[5,10]].",
+      "passed": true,
+      "transcript": "examples/transcripts/addition.txt",
+      "focus": "=====================================================================\n   INPUT MATRIX B  (2 x 2)   \u2014  total entries: 4\n  =====================================================================\n   Enter one number at a time. Decimals are allowed (example: 2.5).\n   If a value is wrong, you can type it again for that box.\n\n  --- Row 1 of 2 ---\n  Enter value for Row 1, Column 1:     saved: 1.0000\n  Enter value for Row 1, Column 2:     saved: 2.0000\n\n  --- Row 2 of 2 ---\n  Enter value for Row 2, Column 1:     saved: 3.0000\n  Enter value for Row 2, Column 2:     saved: 4.0000\n\n  ---------------------------------------------------------------------\n   Done \u2014 preview of matrix B:\n  ---------------------------------------------------------------------\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  1.000000  2.000000  |\n  Row  2 |  3.000000  4.000000  |\n\n\n\n  --- A + B ---\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  5.000000  9.000000  |\n  Row  2 |  5.000000 10.000000  |"
+    },
+    {
+      "id": "subtraction",
+      "title": "Matrix subtraction",
+      "operation": 11,
+      "matrix": [
+        [
+          4,
+          7
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "extra": [
+        "1",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "contains": [
+        "A - B",
+        "3.000000",
+        "-1.000000"
+      ],
+      "category": "Operations",
+      "caption": "Subtracting [[1,2],[3,4]] produces [[3,5],[-1,2]].",
+      "passed": true,
+      "transcript": "examples/transcripts/subtraction.txt",
+      "focus": "=====================================================================\n   INPUT MATRIX B  (2 x 2)   \u2014  total entries: 4\n  =====================================================================\n   Enter one number at a time. Decimals are allowed (example: 2.5).\n   If a value is wrong, you can type it again for that box.\n\n  --- Row 1 of 2 ---\n  Enter value for Row 1, Column 1:     saved: 1.0000\n  Enter value for Row 1, Column 2:     saved: 2.0000\n\n  --- Row 2 of 2 ---\n  Enter value for Row 2, Column 1:     saved: 3.0000\n  Enter value for Row 2, Column 2:     saved: 4.0000\n\n  ---------------------------------------------------------------------\n   Done \u2014 preview of matrix B:\n  ---------------------------------------------------------------------\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  1.000000  2.000000  |\n  Row  2 |  3.000000  4.000000  |\n\n\n\n  --- A - B ---\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  3.000000  5.000000  |\n  Row  2 | -1.000000  2.000000  |"
+    },
+    {
+      "id": "multiplication",
+      "title": "Matrix multiplication",
+      "operation": 12,
+      "matrix": [
+        [
+          4,
+          7
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "extra": [
+        "1",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "contains": [
+        "A * B",
+        "25.000000",
+        "36.000000",
+        "28.000000"
+      ],
+      "category": "Operations",
+      "caption": "The triple-loop product produces [[25,36],[20,28]] for the two recorded inputs.",
+      "passed": true,
+      "transcript": "examples/transcripts/multiplication.txt",
+      "focus": "=====================================================================\n   INPUT MATRIX B  (2 x 2)   \u2014  total entries: 4\n  =====================================================================\n   Enter one number at a time. Decimals are allowed (example: 2.5).\n   If a value is wrong, you can type it again for that box.\n\n  --- Row 1 of 2 ---\n  Enter value for Row 1, Column 1:     saved: 1.0000\n  Enter value for Row 1, Column 2:     saved: 2.0000\n\n  --- Row 2 of 2 ---\n  Enter value for Row 2, Column 1:     saved: 3.0000\n  Enter value for Row 2, Column 2:     saved: 4.0000\n\n  ---------------------------------------------------------------------\n   Done \u2014 preview of matrix B:\n  ---------------------------------------------------------------------\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  1.000000  2.000000  |\n  Row  2 |  3.000000  4.000000  |\n\n\n\n  --- A * B ---\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 | 25.000000 36.000000  |\n  Row  2 | 20.000000 28.000000  |"
+    },
+    {
+      "id": "scalar",
+      "title": "Scalar multiplication",
+      "operation": 13,
+      "matrix": [
+        [
+          4,
+          7
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "extra": [
+        "1",
+        "-2"
+      ],
+      "contains": [
+        "k * A",
+        "-8.000000",
+        "-14.000000"
+      ],
+      "category": "Operations",
+      "caption": "A negative scalar multiplies every cell without replacing the working matrix.",
+      "passed": true,
+      "transcript": "examples/transcripts/scalar.txt",
+      "focus": "Enter the number k: \n  --- k * A ---\n\n  Matrix (2 x 2):\n             Column 1   Column 2\n  Row  1 |  -8.000000 -14.000000  |\n  Row  2 |  -4.000000 -12.000000  |"
+    },
+    {
+      "id": "trace",
+      "title": "Matrix trace",
+      "operation": 14,
+      "matrix": [
+        [
+          4,
+          7
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "Trace(A) = 10.000000"
+      ],
+      "category": "Operations",
+      "caption": "The trace is the sum of the two diagonal entries, 4 + 6.",
+      "passed": true,
+      "transcript": "examples/transcripts/trace.txt",
+      "focus": "Trace(A) = 10.000000"
+    },
+    {
+      "id": "rank",
+      "title": "Rank of dependent rows",
+      "operation": 15,
+      "matrix": [
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          2,
+          4,
+          6
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "Rank(A) = 1"
+      ],
+      "category": "Operations",
+      "caption": "Row reduction finds one independent row in this 3x3 matrix.",
+      "passed": true,
+      "transcript": "examples/transcripts/rank.txt",
+      "focus": "Rank(A) = 1"
+    },
+    {
+      "id": "adjugate",
+      "title": "3x3 adjugate",
+      "operation": 5,
+      "matrix": [
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          4
+        ],
+        [
+          5,
+          6,
+          0
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "Adjoint of A (cofactors)",
+        "-24.000000"
+      ],
+      "category": "Operations",
+      "caption": "The direct cofactor implementation transposes the cofactor matrix to form the adjugate.",
+      "passed": true,
+      "transcript": "examples/transcripts/adjugate.txt",
+      "focus": "--- Matrix A ---\n\n  Matrix (3 x 3):\n            Column 1  Column 2  Column 3\n  Row  1 |  1.000000  2.000000  3.000000  |\n  Row  2 |  0.000000  1.000000  4.000000  |\n  Row  3 |  5.000000  6.000000  0.000000  |\n\n\n  Adjoint of A (cofactors):\n\n  Matrix (3 x 3):\n             Column 1   Column 2   Column 3\n  Row  1 | -24.000000  18.000000   5.000000  |\n  Row  2 |  20.000000 -15.000000  -4.000000  |\n  Row  3 |  -5.000000   4.000000   1.000000  |"
+    },
+    {
+      "id": "singular_adjugate",
+      "title": "Singular 4x4 adjugate",
+      "operation": 5,
+      "matrix": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "Adjoint of A (cofactors)",
+        "6.000000"
+      ],
+      "category": "Edge cases",
+      "caption": "The larger singular case has a valid adjugate with bottom-right value 6.",
+      "passed": true,
+      "transcript": "examples/transcripts/singular_adjugate.txt",
+      "focus": "--- Matrix A ---\n\n  Matrix (4 x 4):\n            Column 1  Column 2  Column 3  Column 4\n  Row  1 |  1.000000  0.000000  0.000000  0.000000  |\n  Row  2 |  0.000000  2.000000  0.000000  0.000000  |\n  Row  3 |  0.000000  0.000000  3.000000  0.000000  |\n  Row  4 |  0.000000  0.000000  0.000000  0.000000  |\n\n\n  Adjoint of A (cofactors):\n\n  Matrix (4 x 4):\n            Column 1  Column 2  Column 3  Column 4\n  Row  1 |  0.000000 -0.000000  0.000000 -0.000000  |\n  Row  2 | -0.000000  0.000000 -0.000000  0.000000  |\n  Row  3 |  0.000000 -0.000000  0.000000 -0.000000  |\n  Row  4 | -0.000000  0.000000 -0.000000  6.000000  |"
+    },
+    {
+      "id": "small_scale",
+      "title": "Small-scale inverse",
+      "operation": 6,
+      "matrix": [
+        [
+          1e-12,
+          0
+        ],
+        [
+          0,
+          2e-12
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "Inverse of A:",
+        "1.000000e+12",
+        "5.000000e+11"
+      ],
+      "category": "Edge cases",
+      "caption": "Row equilibration preserves the inverse of a tiny, well-scaled diagonal matrix.",
+      "passed": true,
+      "transcript": "examples/transcripts/small_scale.txt",
+      "focus": "--- Matrix A ---\n\n  Matrix (2 x 2):\n               Column 1     Column 2\n  Row  1 | 1.000000e-12     0.000000  |\n  Row  2 |     0.000000 2.000000e-12  |\n\n  Determinant = 2.00000000e-24\n\n  Inverse of A:\n\n  Matrix (2 x 2):\n               Column 1     Column 2\n  Row  1 | 1.000000e+12     0.000000  |\n  Row  2 |     0.000000 5.000000e+11  |"
+    },
+    {
+      "id": "pivot_swap",
+      "title": "Zero first pivot",
+      "operation": 4,
+      "matrix": [
+        [
+          0,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "Determinant = -6.00000000"
+      ],
+      "category": "Edge cases",
+      "caption": "Partial pivoting swaps rows and preserves the determinant sign.",
+      "passed": true,
+      "transcript": "examples/transcripts/pivot_swap.txt",
+      "focus": "--- Matrix A ---\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  0.000000  2.000000  |\n  Row  2 |  3.000000  4.000000  |\n\n\n  Determinant = -6.00000000"
+    },
+    {
+      "id": "saved_history",
+      "title": "Saved result provenance",
+      "operation": 9,
+      "matrix": [
+        [
+          4,
+          7
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "extra": [],
+      "contains": [
+        "Transpose A^T"
+      ],
+      "category": "Workflow",
+      "caption": "A saved report keeps the calculation name even after the About screen is opened.",
+      "passed": true,
+      "transcript": "examples/transcripts/saved_history.txt",
+      "focus": "==============================================\n  Matrix Calculator PF \u2014 Last Result\n==============================================\n\n  Result operation : Transpose\n\n  Result type : Matrix (2 x 2)\n\n                          Column 1          Column 2\n  Row  1 |          4.000000          2.000000  |\n  Row  2 |          7.000000          6.000000  |\n\n  Most recent determinant : 0\n\n==============================================\n"
+    },
+    {
+      "id": "validation",
+      "title": "Finite-value validation",
+      "operation": 13,
+      "matrix": [
+        [
+          4,
+          7
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "extra": [
+        "1",
+        "nan",
+        "inf",
+        "1e999",
+        "2"
+      ],
+      "contains": [
+        "finite number",
+        "k * A"
+      ],
+      "category": "Workflow",
+      "caption": "NaN, infinity and overflowing numeric tokens are rejected before a valid scalar is accepted.",
+      "passed": true,
+      "transcript": "examples/transcripts/validation.txt",
+      "focus": "Enter the number k:   Enter a finite number within double precision range. Example: 3.5\n  Enter the number k:   Enter a finite number within double precision range. Example: 3.5\n  Enter the number k:   Enter a finite number within double precision range. Example: 3.5\n  Enter the number k: \n  --- k * A ---\n\n  Matrix (2 x 2):\n            Column 1  Column 2\n  Row  1 |  8.000000 14.000000  |\n  Row  2 |  4.000000 12.000000  |"
+    },
+    {
+      "id": "regression",
+      "title": "Native regression report",
+      "operation": null,
+      "matrix": [],
+      "extra": [],
+      "contains": [],
+      "category": "Verification",
+      "caption": "The regression executable checks numerical values, residuals, boundary sizes and save provenance.",
+      "passed": true,
+      "transcript": "examples/transcripts/regression.txt",
+      "focus": "PASS 2x2 determinant\nPASS invertible matrix accepted\nPASS inverse residual\nPASS working matrix preserved\nPASS unique system accepted\nPASS known solution\nPASS row-swap determinant sign\nPASS zero first pivot handled\nPASS singular inverse rejected\nPASS nonunique system rejected\nPASS dependent rows rank\nPASS zero matrix rank\nPASS small-scale determinant retained\nPASS small-scale inverse retained\nPASS small-scale rank\nPASS different row units\nPASS balanced extreme-scale determinant\nPASS small determinant adjugate\nPASS singular 4x4 adjugate\nPASS minor calculation preserves determinant history\nPASS maximum 10x10 determinant\nPASS maximum 10x10 inverse\nPASS reject token nan\nPASS reject token inf\nPASS reject token -inf\nPASS reject token 1e999\nPASS reject token abc\nPASS scientific input\nPASS representable subnormal input\nPASS tiny-value formatting\nPASS integer range checked before narrowing\nPASS nonfinite result preserves stored calculation\nPASS save labels actual result operation\nCHECKS 33 PASSED"
+    }
+  ]
+}

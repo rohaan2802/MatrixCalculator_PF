@@ -1,0 +1,592 @@
+[
+  {
+    "id": "display",
+    "title": "Labeled matrix display",
+    "operation": 1,
+    "matrix": [
+      [
+        4,
+        7
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "Matrix A (2x2)"
+    ],
+    "category": "Operations",
+    "caption": "The native calculator displays a 2x2 working matrix with labeled rows and columns."
+  },
+  {
+    "id": "symmetric",
+    "title": "Symmetric matrix check",
+    "operation": 2,
+    "matrix": [
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "is SYMMETRIC"
+    ],
+    "category": "Operations",
+    "caption": "The two off-diagonal entries match, so the pairwise symmetry check succeeds."
+  },
+  {
+    "id": "asymmetric",
+    "title": "Asymmetric matrix check",
+    "operation": 2,
+    "matrix": [
+      [
+        4,
+        7
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "NOT symmetric"
+    ],
+    "category": "Operations",
+    "caption": "The original input is compared with its transpose and correctly classified as asymmetric."
+  },
+  {
+    "id": "identity",
+    "title": "Identity matrix check",
+    "operation": 3,
+    "matrix": [
+      [
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        1
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "IS an identity"
+    ],
+    "category": "Operations",
+    "caption": "A 3x3 identity input passes the diagonal and off-diagonal checks."
+  },
+  {
+    "id": "determinant_2",
+    "title": "2x2 determinant",
+    "operation": 4,
+    "matrix": [
+      [
+        4,
+        7
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "Determinant = 10.00000000"
+    ],
+    "category": "Operations",
+    "caption": "Gaussian elimination returns determinant 10 for the bundled 2x2 example."
+  },
+  {
+    "id": "determinant_3",
+    "title": "3x3 determinant",
+    "operation": 4,
+    "matrix": [
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        0,
+        1,
+        4
+      ],
+      [
+        5,
+        6,
+        0
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "Determinant = 1.00000000"
+    ],
+    "category": "Operations",
+    "caption": "The classic 3x3 example has determinant 1, providing a known-value calculation."
+  },
+  {
+    "id": "inverse",
+    "title": "2x2 inverse",
+    "operation": 6,
+    "matrix": [
+      [
+        4,
+        7
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "Inverse of A:",
+      "0.600000",
+      "-0.700000"
+    ],
+    "category": "Operations",
+    "caption": "The native inverse has entries 0.6, -0.7, -0.2 and 0.4."
+  },
+  {
+    "id": "singular_inverse",
+    "title": "Singular inverse rejection",
+    "operation": 6,
+    "matrix": [
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "inverse does not exist"
+    ],
+    "category": "Edge cases",
+    "caption": "Dependent rows are detected, and the calculator reports that an inverse does not exist."
+  },
+  {
+    "id": "solve",
+    "title": "Unique linear-system solution",
+    "operation": 7,
+    "matrix": [
+      [
+        4,
+        7
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "extra": [
+      "1",
+      "18",
+      "14"
+    ],
+    "contains": [
+      "Solution x:",
+      "1.000000",
+      "2.000000"
+    ],
+    "category": "Operations",
+    "caption": "For A x = [18,14], elimination returns the known solution x = [1,2]."
+  },
+  {
+    "id": "singular_solve",
+    "title": "Nonunique system rejection",
+    "operation": 7,
+    "matrix": [
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "extra": [
+      "1",
+      "3",
+      "6"
+    ],
+    "contains": [
+      "no single unique answer"
+    ],
+    "category": "Edge cases",
+    "caption": "A dependent system is rejected as having no unique solution."
+  },
+  {
+    "id": "transpose",
+    "title": "Matrix transpose",
+    "operation": 9,
+    "matrix": [
+      [
+        4,
+        7
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "Transpose A^T"
+    ],
+    "category": "Operations",
+    "caption": "Rows become columns while the stored working matrix stays available for later operations."
+  },
+  {
+    "id": "addition",
+    "title": "Matrix addition",
+    "operation": 10,
+    "matrix": [
+      [
+        4,
+        7
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "extra": [
+      "1",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "contains": [
+      "A + B",
+      "5.000000",
+      "10.000000"
+    ],
+    "category": "Operations",
+    "caption": "Adding [[1,2],[3,4]] produces [[5,9],[5,10]]."
+  },
+  {
+    "id": "subtraction",
+    "title": "Matrix subtraction",
+    "operation": 11,
+    "matrix": [
+      [
+        4,
+        7
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "extra": [
+      "1",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "contains": [
+      "A - B",
+      "3.000000",
+      "-1.000000"
+    ],
+    "category": "Operations",
+    "caption": "Subtracting [[1,2],[3,4]] produces [[3,5],[-1,2]]."
+  },
+  {
+    "id": "multiplication",
+    "title": "Matrix multiplication",
+    "operation": 12,
+    "matrix": [
+      [
+        4,
+        7
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "extra": [
+      "1",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "contains": [
+      "A * B",
+      "25.000000",
+      "36.000000",
+      "28.000000"
+    ],
+    "category": "Operations",
+    "caption": "The triple-loop product produces [[25,36],[20,28]] for the two recorded inputs."
+  },
+  {
+    "id": "scalar",
+    "title": "Scalar multiplication",
+    "operation": 13,
+    "matrix": [
+      [
+        4,
+        7
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "extra": [
+      "1",
+      "-2"
+    ],
+    "contains": [
+      "k * A",
+      "-8.000000",
+      "-14.000000"
+    ],
+    "category": "Operations",
+    "caption": "A negative scalar multiplies every cell without replacing the working matrix."
+  },
+  {
+    "id": "trace",
+    "title": "Matrix trace",
+    "operation": 14,
+    "matrix": [
+      [
+        4,
+        7
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "Trace(A) = 10.000000"
+    ],
+    "category": "Operations",
+    "caption": "The trace is the sum of the two diagonal entries, 4 + 6."
+  },
+  {
+    "id": "rank",
+    "title": "Rank of dependent rows",
+    "operation": 15,
+    "matrix": [
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        2,
+        4,
+        6
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "Rank(A) = 1"
+    ],
+    "category": "Operations",
+    "caption": "Row reduction finds one independent row in this 3x3 matrix."
+  },
+  {
+    "id": "adjugate",
+    "title": "3x3 adjugate",
+    "operation": 5,
+    "matrix": [
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        0,
+        1,
+        4
+      ],
+      [
+        5,
+        6,
+        0
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "Adjoint of A (cofactors)",
+      "-24.000000"
+    ],
+    "category": "Operations",
+    "caption": "The direct cofactor implementation transposes the cofactor matrix to form the adjugate."
+  },
+  {
+    "id": "singular_adjugate",
+    "title": "Singular 4x4 adjugate",
+    "operation": 5,
+    "matrix": [
+      [
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        2,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "Adjoint of A (cofactors)",
+      "6.000000"
+    ],
+    "category": "Edge cases",
+    "caption": "The larger singular case has a valid adjugate with bottom-right value 6."
+  },
+  {
+    "id": "small_scale",
+    "title": "Small-scale inverse",
+    "operation": 6,
+    "matrix": [
+      [
+        1e-12,
+        0
+      ],
+      [
+        0,
+        2e-12
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "Inverse of A:",
+      "1.000000e+12",
+      "5.000000e+11"
+    ],
+    "category": "Edge cases",
+    "caption": "Row equilibration preserves the inverse of a tiny, well-scaled diagonal matrix."
+  },
+  {
+    "id": "pivot_swap",
+    "title": "Zero first pivot",
+    "operation": 4,
+    "matrix": [
+      [
+        0,
+        2
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "Determinant = -6.00000000"
+    ],
+    "category": "Edge cases",
+    "caption": "Partial pivoting swaps rows and preserves the determinant sign."
+  },
+  {
+    "id": "saved_history",
+    "title": "Saved result provenance",
+    "operation": 9,
+    "matrix": [
+      [
+        4,
+        7
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "extra": [],
+    "contains": [
+      "Transpose A^T"
+    ],
+    "category": "Workflow",
+    "caption": "A saved report keeps the calculation name even after the About screen is opened."
+  },
+  {
+    "id": "validation",
+    "title": "Finite-value validation",
+    "operation": 13,
+    "matrix": [
+      [
+        4,
+        7
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "extra": [
+      "1",
+      "nan",
+      "inf",
+      "1e999",
+      "2"
+    ],
+    "contains": [
+      "finite number",
+      "k * A"
+    ],
+    "category": "Workflow",
+    "caption": "NaN, infinity and overflowing numeric tokens are rejected before a valid scalar is accepted."
+  },
+  {
+    "id": "regression",
+    "title": "Native regression report",
+    "operation": null,
+    "matrix": [],
+    "extra": [],
+    "contains": [],
+    "category": "Verification",
+    "caption": "The regression executable checks numerical values, residuals, boundary sizes and save provenance."
+  }
+]

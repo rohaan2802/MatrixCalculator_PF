@@ -1,0 +1,34 @@
+PASS 2x2 determinant
+PASS invertible matrix accepted
+PASS inverse residual
+PASS working matrix preserved
+PASS unique system accepted
+PASS known solution
+PASS row-swap determinant sign
+PASS zero first pivot handled
+PASS singular inverse rejected
+PASS nonunique system rejected
+PASS dependent rows rank
+PASS zero matrix rank
+PASS small-scale determinant retained
+PASS small-scale inverse retained
+PASS small-scale rank
+PASS different row units
+PASS balanced extreme-scale determinant
+PASS small determinant adjugate
+PASS singular 4x4 adjugate
+PASS minor calculation preserves determinant history
+PASS maximum 10x10 determinant
+PASS maximum 10x10 inverse
+PASS reject token nan
+PASS reject token inf
+PASS reject token -inf
+PASS reject token 1e999
+PASS reject token abc
+PASS scientific input
+PASS representable subnormal input
+PASS tiny-value formatting
+PASS integer range checked before narrowing
+PASS nonfinite result preserves stored calculation
+PASS save labels actual result operation
+CHECKS 33 PASSED

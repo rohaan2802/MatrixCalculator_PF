@@ -1,0 +1,218 @@
+[
+  {
+    "id": "01_display_v2",
+    "title": "Labeled matrix display",
+    "caption": "The native calculator displays a 2x2 working matrix with labeled rows and columns.",
+    "category": "Operations",
+    "full": "assets/figures/full/01_display_v2.png",
+    "preview": "assets/figures/preview/01_display_v2.png",
+    "transcript": "examples/transcripts/display.txt"
+  },
+  {
+    "id": "02_symmetric_v2",
+    "title": "Symmetric matrix check",
+    "caption": "The two off-diagonal entries match, so the pairwise symmetry check succeeds.",
+    "category": "Operations",
+    "full": "assets/figures/full/02_symmetric_v2.png",
+    "preview": "assets/figures/preview/02_symmetric_v2.png",
+    "transcript": "examples/transcripts/symmetric.txt"
+  },
+  {
+    "id": "03_asymmetric_v2",
+    "title": "Asymmetric matrix check",
+    "caption": "The original input is compared with its transpose and correctly classified as asymmetric.",
+    "category": "Operations",
+    "full": "assets/figures/full/03_asymmetric_v2.png",
+    "preview": "assets/figures/preview/03_asymmetric_v2.png",
+    "transcript": "examples/transcripts/asymmetric.txt"
+  },
+  {
+    "id": "04_identity_v2",
+    "title": "Identity matrix check",
+    "caption": "A 3x3 identity input passes the diagonal and off-diagonal checks.",
+    "category": "Operations",
+    "full": "assets/figures/full/04_identity_v2.png",
+    "preview": "assets/figures/preview/04_identity_v2.png",
+    "transcript": "examples/transcripts/identity.txt"
+  },
+  {
+    "id": "05_determinant_2_v2",
+    "title": "2x2 determinant",
+    "caption": "Gaussian elimination returns determinant 10 for the bundled 2x2 example.",
+    "category": "Operations",
+    "full": "assets/figures/full/05_determinant_2_v2.png",
+    "preview": "assets/figures/preview/05_determinant_2_v2.png",
+    "transcript": "examples/transcripts/determinant_2.txt"
+  },
+  {
+    "id": "06_determinant_3_v2",
+    "title": "3x3 determinant",
+    "caption": "The classic 3x3 example has determinant 1, providing a known-value calculation.",
+    "category": "Operations",
+    "full": "assets/figures/full/06_determinant_3_v2.png",
+    "preview": "assets/figures/preview/06_determinant_3_v2.png",
+    "transcript": "examples/transcripts/determinant_3.txt"
+  },
+  {
+    "id": "07_inverse_v2",
+    "title": "2x2 inverse",
+    "caption": "The native inverse has entries 0.6, -0.7, -0.2 and 0.4.",
+    "category": "Operations",
+    "full": "assets/figures/full/07_inverse_v2.png",
+    "preview": "assets/figures/preview/07_inverse_v2.png",
+    "transcript": "examples/transcripts/inverse.txt"
+  },
+  {
+    "id": "08_singular_inverse_v2",
+    "title": "Singular inverse rejection",
+    "caption": "Dependent rows are detected, and the calculator reports that an inverse does not exist.",
+    "category": "Edge cases",
+    "full": "assets/figures/full/08_singular_inverse_v2.png",
+    "preview": "assets/figures/preview/08_singular_inverse_v2.png",
+    "transcript": "examples/transcripts/singular_inverse.txt"
+  },
+  {
+    "id": "09_solve_v2",
+    "title": "Unique linear-system solution",
+    "caption": "For A x = [18,14], elimination returns the known solution x = [1,2].",
+    "category": "Operations",
+    "full": "assets/figures/full/09_solve_v2.png",
+    "preview": "assets/figures/preview/09_solve_v2.png",
+    "transcript": "examples/transcripts/solve.txt"
+  },
+  {
+    "id": "10_singular_solve_v2",
+    "title": "Nonunique system rejection",
+    "caption": "A dependent system is rejected as having no unique solution.",
+    "category": "Edge cases",
+    "full": "assets/figures/full/10_singular_solve_v2.png",
+    "preview": "assets/figures/preview/10_singular_solve_v2.png",
+    "transcript": "examples/transcripts/singular_solve.txt"
+  },
+  {
+    "id": "11_transpose_v2",
+    "title": "Matrix transpose",
+    "caption": "Rows become columns while the stored working matrix stays available for later operations.",
+    "category": "Operations",
+    "full": "assets/figures/full/11_transpose_v2.png",
+    "preview": "assets/figures/preview/11_transpose_v2.png",
+    "transcript": "examples/transcripts/transpose.txt"
+  },
+  {
+    "id": "12_addition_v2",
+    "title": "Matrix addition",
+    "caption": "Adding [[1,2],[3,4]] produces [[5,9],[5,10]].",
+    "category": "Operations",
+    "full": "assets/figures/full/12_addition_v2.png",
+    "preview": "assets/figures/preview/12_addition_v2.png",
+    "transcript": "examples/transcripts/addition.txt"
+  },
+  {
+    "id": "13_subtraction_v2",
+    "title": "Matrix subtraction",
+    "caption": "Subtracting [[1,2],[3,4]] produces [[3,5],[-1,2]].",
+    "category": "Operations",
+    "full": "assets/figures/full/13_subtraction_v2.png",
+    "preview": "assets/figures/preview/13_subtraction_v2.png",
+    "transcript": "examples/transcripts/subtraction.txt"
+  },
+  {
+    "id": "14_multiplication_v2",
+    "title": "Matrix multiplication",
+    "caption": "The triple-loop product produces [[25,36],[20,28]] for the two recorded inputs.",
+    "category": "Operations",
+    "full": "assets/figures/full/14_multiplication_v2.png",
+    "preview": "assets/figures/preview/14_multiplication_v2.png",
+    "transcript": "examples/transcripts/multiplication.txt"
+  },
+  {
+    "id": "15_scalar_v2",
+    "title": "Scalar multiplication",
+    "caption": "A negative scalar multiplies every cell without replacing the working matrix.",
+    "category": "Operations",
+    "full": "assets/figures/full/15_scalar_v2.png",
+    "preview": "assets/figures/preview/15_scalar_v2.png",
+    "transcript": "examples/transcripts/scalar.txt"
+  },
+  {
+    "id": "16_trace_v2",
+    "title": "Matrix trace",
+    "caption": "The trace is the sum of the two diagonal entries, 4 + 6.",
+    "category": "Operations",
+    "full": "assets/figures/full/16_trace_v2.png",
+    "preview": "assets/figures/preview/16_trace_v2.png",
+    "transcript": "examples/transcripts/trace.txt"
+  },
+  {
+    "id": "17_rank_v2",
+    "title": "Rank of dependent rows",
+    "caption": "Row reduction finds one independent row in this 3x3 matrix.",
+    "category": "Operations",
+    "full": "assets/figures/full/17_rank_v2.png",
+    "preview": "assets/figures/preview/17_rank_v2.png",
+    "transcript": "examples/transcripts/rank.txt"
+  },
+  {
+    "id": "18_adjugate_v2",
+    "title": "3x3 adjugate",
+    "caption": "The direct cofactor implementation transposes the cofactor matrix to form the adjugate.",
+    "category": "Operations",
+    "full": "assets/figures/full/18_adjugate_v2.png",
+    "preview": "assets/figures/preview/18_adjugate_v2.png",
+    "transcript": "examples/transcripts/adjugate.txt"
+  },
+  {
+    "id": "19_singular_adjugate_v2",
+    "title": "Singular 4x4 adjugate",
+    "caption": "The larger singular case has a valid adjugate with bottom-right value 6.",
+    "category": "Edge cases",
+    "full": "assets/figures/full/19_singular_adjugate_v2.png",
+    "preview": "assets/figures/preview/19_singular_adjugate_v2.png",
+    "transcript": "examples/transcripts/singular_adjugate.txt"
+  },
+  {
+    "id": "20_small_scale_v2",
+    "title": "Small-scale inverse",
+    "caption": "Row equilibration preserves the inverse of a tiny, well-scaled diagonal matrix.",
+    "category": "Edge cases",
+    "full": "assets/figures/full/20_small_scale_v2.png",
+    "preview": "assets/figures/preview/20_small_scale_v2.png",
+    "transcript": "examples/transcripts/small_scale.txt"
+  },
+  {
+    "id": "21_pivot_swap_v2",
+    "title": "Zero first pivot",
+    "caption": "Partial pivoting swaps rows and preserves the determinant sign.",
+    "category": "Edge cases",
+    "full": "assets/figures/full/21_pivot_swap_v2.png",
+    "preview": "assets/figures/preview/21_pivot_swap_v2.png",
+    "transcript": "examples/transcripts/pivot_swap.txt"
+  },
+  {
+    "id": "22_saved_history_v2",
+    "title": "Saved result provenance",
+    "caption": "A saved report keeps the calculation name even after the About screen is opened.",
+    "category": "Workflow",
+    "full": "assets/figures/full/22_saved_history_v2.png",
+    "preview": "assets/figures/preview/22_saved_history_v2.png",
+    "transcript": "examples/transcripts/saved_history.txt"
+  },
+  {
+    "id": "23_validation_v2",
+    "title": "Finite-value validation",
+    "caption": "NaN, infinity and overflowing numeric tokens are rejected before a valid scalar is accepted.",
+    "category": "Workflow",
+    "full": "assets/figures/full/23_validation_v2.png",
+    "preview": "assets/figures/preview/23_validation_v2.png",
+    "transcript": "examples/transcripts/validation.txt"
+  },
+  {
+    "id": "24_regression_v2",
+    "title": "Native regression report",
+    "caption": "The regression executable checks numerical values, residuals, boundary sizes and save provenance.",
+    "category": "Verification",
+    "full": "assets/figures/full/24_regression_v2.png",
+    "preview": "assets/figures/preview/24_regression_v2.png",
+    "transcript": "examples/transcripts/regression.txt"
+  }
+]
